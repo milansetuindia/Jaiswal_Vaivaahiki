@@ -1,0 +1,39 @@
+:root{
+
+    /* Colors */
+
+    --primary:#7B1113;
+
+    --secondary:#D4AF37;
+
+    --accent:#FFF6E5;
+
+    --white:#ffffff;
+
+    --black:#222222;
+
+    --grey:#666666;
+
+    --border:#E5E5E5;
+
+    /* Fonts */
+
+    --font-hindi:'Noto Sans Devanagari',sans-serif;
+
+    --font-heading:'Cinzel',serif;
+
+    --font-body:'Poppins',sans-serif;
+
+    /* Radius */
+
+    --radius:12px;
+
+    /* Shadow */
+
+    --shadow:0 10px 25px rgba(0,0,0,.12);
+
+    /* Transition */
+
+    --transition:.3s ease;
+
+}
