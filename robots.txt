@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://milansetu.netlify.app/sitemap.xml
