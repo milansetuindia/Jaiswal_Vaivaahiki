@@ -1876,7 +1876,7 @@ document.addEventListener(
 
         // Personal Details
         initializeCharacterCounter("fullName", 20);
-        initializeCharacterCounter("placeOfBirth", 20);
+        initializeCharacterCounter("placeOfBirth", 25);
 
         initializeCharacterCounter("rashi", 20);
         initializeCharacterCounter("gan", 20);
@@ -1884,41 +1884,41 @@ document.addEventListener(
         initializeCharacterCounter("complexion", 20);
         initializeCharacterCounter("caste", 20);
 
-        initializeCharacterCounter("language", 20);
-        initializeCharacterCounter("hobbies", 20);
+        initializeCharacterCounter("language", 25);
+        initializeCharacterCounter("hobbies", 25);
         initializeCharacterCounter("other", 40);
 
 
 
 
         // Education
-        initializeCharacterCounter("highestQualification", 20);
-        initializeCharacterCounter("college", 20);
-        initializeCharacterCounter("Board10th", 20);
-        initializeCharacterCounter("Board12th", 20);
-        initializeCharacterCounter("specialSkill", 20);
-        initializeCharacterCounter("educationOther", 20);
+        initializeCharacterCounter("highestQualification", 25);
+        initializeCharacterCounter("college", 25);
+        initializeCharacterCounter("Board10th", 25);
+        initializeCharacterCounter("Board12th", 25);
+        initializeCharacterCounter("specialSkill", 25);
+        initializeCharacterCounter("educationOther", 25);
 
         // Work & Career
-        initializeCharacterCounter("profession", 20);
-        initializeCharacterCounter("organization", 20);
-        initializeCharacterCounter("workPlace", 20);
-        initializeCharacterCounter("income", 20);
+        initializeCharacterCounter("profession", 25);
+        initializeCharacterCounter("organization", 25);
+        initializeCharacterCounter("workPlace", 25);
+        initializeCharacterCounter("income", 25);
 
 
 
         // Family
-        initializeCharacterCounter("fatherName", 20);
-        initializeCharacterCounter("fatherOccupation", 20);
-        initializeCharacterCounter("motherName", 20);
-        initializeCharacterCounter("motherOccupation", 20);
+        initializeCharacterCounter("fatherName", 25);
+        initializeCharacterCounter("fatherOccupation", 25);
+        initializeCharacterCounter("motherName", 25);
+        initializeCharacterCounter("motherOccupation", 25);
         initializeCharacterCounter("siblingsDetails", 40);
 
         // Partner Preference
-        initializeCharacterCounter("preferredQualification", 20);
-        initializeCharacterCounter("preferredProfession", 20);
-        initializeCharacterCounter("preferredLocation", 20);
-        initializeCharacterCounter("otherExpectations", 20);
+        initializeCharacterCounter("preferredQualification", 25);
+        initializeCharacterCounter("preferredProfession", 25);
+        initializeCharacterCounter("preferredLocation", 25);
+        initializeCharacterCounter("otherExpectations", 25);
 
         // Address Details
         initializeCharacterCounter("currentAddress", 75);
@@ -1926,7 +1926,7 @@ document.addEventListener(
 
         initializeCharacterCounter("mobileNumber", 15);
 
-        initializeCharacterCounter("senderName", 25);
+        initializeCharacterCounter("senderName", 20);
 
         initializeCharacterCounter("senderMobile", 15);
 
