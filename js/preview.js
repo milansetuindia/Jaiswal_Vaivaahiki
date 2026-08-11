@@ -215,15 +215,15 @@ function applyPositions() {
 
             e.style.fontFamily = "'Playfair Display', serif";
 
-            e.style.fontSize = "40px";
+            e.style.fontSize = "30px";
 
-            e.style.fontWeight = "700";
+            e.style.fontWeight = "650";
 
             e.style.color = "#003153";
 
             e.style.letterSpacing = "1.5px";
 
-            e.style.textAlign = "center";
+            e.style.textAlign = "left";
 
             e.style.fontStyle = "italic";
 
