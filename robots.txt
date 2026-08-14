@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://milansetu.netlify.app/sitemap.xml
+Sitemap: https://jaiswal-vaivaahiki.netlify.app/sitemap.xml
