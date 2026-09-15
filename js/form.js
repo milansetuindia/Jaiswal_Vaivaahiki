@@ -11,7 +11,7 @@
 
 let currentStep = 1;
 
-const totalSteps = 9;
+const totalSteps = 10;
 
 /*
 ============================================================
@@ -50,7 +50,9 @@ const biodata = {
 
     },
 
-    photos:{}
+    photos:{},
+
+    template: "template1"
 
 };
 
@@ -144,20 +146,22 @@ function showStep(step){
 ============================================================
 */
 
-
 function nextStep(){
+
     /*
     ============================================
             VALIDATE CURRENT STEP
     ============================================
     */
-   console.log("nextStep() called");
 
-   if(!validateCurrentStep(currentStep)){
+    console.log("nextStep() called");
+
+    if(!validateCurrentStep(currentStep)){
 
         return;
 
-   }
+    }
+
 
     /*
     ============================================
@@ -200,9 +204,51 @@ function nextStep(){
             break;
 
         case 8:
+
             saveDeclarationData();
+
+            /*
+            Validate complete biodata
+            before moving to template selection
+            */
+
+            if(!validateCompleteForm()){
+
+                return;
+
+            }
+
             break;
+
+
+        case 9:
+
+            /*
+            Save selected template
+            */
+
+            if(!saveSelectedTemplate()){
+
+                return;
+
+            }
+
+            /*
+            Prepare review page
+            */
+
+            populateReview();
+
+            break;
+
     }
+
+
+    /*
+    ============================================
+            FINAL STEP
+    ============================================
+    */
 
     if(currentStep === totalSteps){
 
@@ -212,17 +258,12 @@ function nextStep(){
 
     }
 
-    if(currentStep === 8){
 
-        if(!validateCompleteForm()){
-
-            return;
-
-        }
-
-        populateReview();
-
-    }
+    /*
+    ============================================
+            MOVE TO NEXT STEP
+    ============================================
+    */
 
     currentStep++;
 
@@ -286,39 +327,56 @@ function updateProgressBar(){
 
 function updateNavigationButtons(){
 
-    const previousButton = document.getElementById("previousStepBtn");
+    const previousButton =
+        document.getElementById("previousStepBtn");
 
-    const nextButton = document.getElementById("nextStepBtn");
+    const nextButton =
+        document.getElementById("nextStepBtn");
+
 
     if(previousButton){
 
-        previousButton.disabled = currentStep === 1;
+        previousButton.disabled =
+            currentStep === 1;
 
     }
+
 
     if(nextButton){
 
         if(currentStep === totalSteps){
 
+            const finishText =
+                typeof translateText === "function"
+                    ? translateText("Finish")
+                    : "Finish";
+
+
             nextButton.innerHTML = `
-                Finish
+                ${finishText}
                 <i class="fa-solid fa-check"></i>
             `;
+
         }
 
         else{
 
+            const nextText =
+                typeof translateText === "function"
+                    ? translateText("Next")
+                    : "Next";
+
+
             nextButton.innerHTML = `
-                Next
+                ${nextText}
                 <i class="fa-solid fa-arrow-right"></i>
             `;
+
         }
 
     }
 
 }
-
-
 
 /*==========================================================
             STEP 6 - STORE EDUCATION DATA
@@ -364,11 +422,15 @@ function saveEducationData(){
 }
 
 
+
+
 function saveWorkData(){
 
     biodata.work = {
 
         profession : getInputValue("profession"),
+
+        designation : getInputValue("designation"),
 
         organization : getInputValue("organization"),
 
@@ -464,13 +526,20 @@ function savePartnerData(){
 
     biodata.partner = {
 
-        preferredQualification : getInputValue("preferredQualification"),
+        preferredQualification :
+            getInputValue("preferredQualification"),
 
-        preferredProfession : getInputValue("preferredProfession"),
+        preferredProfession :
+            getInputValue("preferredProfession"),
 
-        preferredLocation : getInputValue("preferredLocation"),
+        preferredLocation :
+            getInputValue("preferredLocation"),
 
-        otherExpectations : getInputValue("otherExpectations")
+        preferredCaste :
+            getInputValue("preferredCaste"),
+
+        otherExpectations :
+            getInputValue("otherExpectations")
 
     };
 
@@ -479,7 +548,6 @@ function savePartnerData(){
         biodata.partner
     );
 }
-
 
 
 
@@ -538,12 +606,49 @@ function saveDeclarationData(){
 }
 
 
+/*
+============================================================
+            SAVE SELECTED TEMPLATE
+============================================================
+*/
+
+function saveSelectedTemplate(){
+
+    const selectedTemplate = document.querySelector(
+
+        'input[name="biodataTemplate"]:checked'
+
+    );
+
+    if(!selectedTemplate){
+
+        alert("Please select a biodata template.");
+
+        return false;
+
+    }
+
+    biodata.template = selectedTemplate.value;
+
+    debugLog(
+
+        "Template Selected",
+
+        biodata.template
+
+    );
+
+    return true;
+
+}
+
 
 /*
 ============================================================
                 SAVE PERSONAL DETAILS
 ============================================================
 */
+
 
 function savePersonalData(){
 
@@ -567,6 +672,14 @@ function savePersonalData(){
 
         placeOfBirth : getInputValue("placeOfBirth"),
 
+        religion : getInputValue("religion"),
+
+        gotra : getInputValue("gotra"),
+
+        caste : getInputValue("caste"),
+
+        subCaste : getInputValue("subCaste"),
+
         rashi : getInputValue("rashi"),
 
         gan : getInputValue("gan"),
@@ -576,8 +689,6 @@ function savePersonalData(){
         complexion : getInputValue("complexion"),
 
         maritalStatus : getInputValue("maritalStatus"),
-
-        caste : getInputValue("caste"),
 
         manglik : getInputValue("manglik"),
 
@@ -594,15 +705,11 @@ function savePersonalData(){
 }
 
 
-
 /*
 ============================================================
                 REVIEW PAGE
 ============================================================
 */
-
-
-
 
 function populateReview(){
 
@@ -756,19 +863,279 @@ function populatePhotoReview(){
 
 }
 
-
 /*
 ============================================================
                 LABEL FORMAT
 ============================================================
 */
 
+
 function formatLabel(text){
 
+    const labels = {
+
+        /* PERSONAL */
+        fullName: {
+            en: "Full Name",
+            hi: "पूरा नाम"
+        },
+
+        dob: {
+            en: "Date Of Birth",
+            hi: "जन्म तिथि"
+        },
+
+        timeOfBirth: {
+            en: "Time Of Birth",
+            hi: "जन्म का समय"
+        },
+
+        placeOfBirth: {
+            en: "Place Of Birth",
+            hi: "जन्म स्थान"
+        },
+
+        religion: {
+            en: "Religion",
+            hi: "धर्म"
+        },
+
+        gotra: {
+            en: "Gotra",
+            hi: "गोत्र"
+        },
+
+        caste: {
+            en: "Caste",
+            hi: "जाति"
+        },
+
+        subCaste: {
+            en: "Sub Caste",
+            hi: "उपजाति"
+        },
+
+        rashi: {
+            en: "Rashi",
+            hi: "राशि"
+        },
+
+        gan: {
+            en: "Gan",
+            hi: "गण"
+        },
+
+        height: {
+            en: "Height",
+            hi: "कद"
+        },
+
+        complexion: {
+            en: "Complexion",
+            hi: "रंग"
+        },
+
+        maritalStatus: {
+            en: "Marital Status",
+            hi: "वैवाहिक स्थिति"
+        },
+
+        manglik: {
+            en: "Manglik",
+            hi: "मांगलिक"
+        },
+
+        language: {
+            en: "Language",
+            hi: "भाषा"
+        },
+
+        diet: {
+            en: "Diet",
+            hi: "आहार"
+        },
+
+        hobbies: {
+            en: "Hobbies",
+            hi: "शौक"
+        },
+
+        other: {
+            en: "Other",
+            hi: "अन्य"
+        },
+
+
+        /* EDUCATION */
+        highestQualification: {
+            en: "Highest Qualification",
+            hi: "उच्चतम शैक्षणिक योग्यता"
+        },
+
+        college: {
+            en: "College",
+            hi: "कॉलेज"
+        },
+
+        Board12th: {
+            en: "12th Board",
+            hi: "12वीं बोर्ड"
+        },
+
+        Board10th: {
+            en: "10th Board",
+            hi: "10वीं बोर्ड"
+        },
+
+        specialSkill: {
+            en: "Special Skill",
+            hi: "विशेष कौशल"
+        },
+
+        educationOther: {
+            en: "Education Other",
+            hi: "अन्य शिक्षा"
+        },
+
+
+        /* WORK */
+        profession: {
+            en: "Profession",
+            hi: "पेशा"
+        },
+
+        designation: {
+            en: "Designation",
+            hi: "पद"
+        },
+
+        organization: {
+            en: "Organization",
+            hi: "संस्था"
+        },
+
+        workPlace: {
+            en: "Work Place",
+            hi: "कार्य स्थान"
+        },
+
+        income: {
+            en: "Income",
+            hi: "आय"
+        },
+
+
+        /* FAMILY */
+        fatherName: {
+            en: "Father's Name",
+            hi: "पिता का नाम"
+        },
+
+        fatherOccupation: {
+            en: "Father's Occupation",
+            hi: "पिता का व्यवसाय"
+        },
+
+        motherName: {
+            en: "Mother's Name",
+            hi: "माता का नाम"
+        },
+
+        motherOccupation: {
+            en: "Mother's Occupation",
+            hi: "माता का व्यवसाय"
+        },
+
+        siblingsDetails: {
+            en: "Siblings Details",
+            hi: "भाई-बहनों की जानकारी"
+        },
+
+
+        /* PARTNER */
+        preferredQualification: {
+            en: "Preferred Qualification",
+            hi: "पसंदीदा शैक्षणिक योग्यता"
+        },
+
+        preferredProfession: {
+            en: "Preferred Profession",
+            hi: "पसंदीदा पेशा"
+        },
+
+        preferredLocation: {
+            en: "Preferred Location",
+            hi: "पसंदीदा स्थान"
+        },
+
+        preferredCaste: {
+            en: "Preferred Caste",
+            hi: "पसंदीदा जाति"
+        },
+
+        otherExpectations: {
+            en: "Other Expectations",
+            hi: "अन्य अपेक्षाएँ"
+        },
+
+
+        /* CONTACT */
+        mobileNumber: {
+            en: "Mobile Number",
+            hi: "मोबाइल नंबर"
+        },
+
+
+        /* ADDRESS */
+        currentAddress: {
+            en: "Current Address",
+            hi: "वर्तमान पता"
+        },
+
+        permanentAddress: {
+            en: "Permanent Address",
+            hi: "स्थायी पता"
+        },
+
+
+        /* DECLARATION */
+        declaration: {
+            en: "Declaration",
+            hi: "घोषणा"
+        },
+
+        senderName: {
+            en: "Sender Name",
+            hi: "भेजने वाले का नाम"
+        },
+
+        senderMobile: {
+            en: "Sender Mobile",
+            hi: "भेजने वाले का मोबाइल नंबर"
+        }
+
+    };
+
+
+    const language =
+        typeof getCurrentLanguage === "function"
+            ? getCurrentLanguage()
+            : "en";
+
+
+    if(labels[text]){
+
+        return labels[text][language] ||
+               labels[text].en;
+
+    }
+
+
+    /*
+     * Fallback for any future field
+     */
     return text
-
         .replace(/([A-Z])/g," $1")
-
         .replace(/^./,str => str.toUpperCase());
 
 }
@@ -845,6 +1212,10 @@ function openBiodataForm(){
     hideSection("hero");
 
     hideSection("features");
+
+    hideSection("support");
+
+    hideSection("join-portal");
 
     hideSection("preview");
 
@@ -998,7 +1369,7 @@ function returnToLandingPage(){
 
 const FORM_CONFIG = {
 
-    totalSteps: 9,
+    totalSteps: 10,
 
     version: "1.0.0",
 
@@ -1046,7 +1417,7 @@ function resetFormData(){
 
     biodata.education = {};
 
-    biodata.work = {}
+    biodata.work = {};
 
     biodata.family = {};
 
@@ -1058,8 +1429,9 @@ function resetFormData(){
 
     biodata.photos = {};
 
-}
+    biodata.template = "template1";
 
+}
 
 /*
 ============================================================
@@ -1170,6 +1542,135 @@ document.addEventListener("DOMContentLoaded",()=>{
     );
 
 });
+
+
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        initializeTemplateCardSelection();
+
+    }
+);
+
+
+
+
+/*==========================================================
+        STEP 9 - CLICK ENTIRE TEMPLATE CARD
+==========================================================*/
+
+function initializeTemplateCardSelection() {
+
+    const templateCards =
+        document.querySelectorAll(
+            ".template-option"
+        );
+
+    templateCards.forEach(card => {
+
+        const radio =
+            card.querySelector(
+                'input[name="biodataTemplate"]'
+            );
+
+        if (!radio) {
+            return;
+        }
+
+        card.addEventListener(
+            "click",
+            function(event) {
+
+                /*
+                 * If user clicked the radio button
+                 * or label, browser already handles it.
+                 */
+                if (
+                    event.target === radio ||
+                    event.target.tagName === "LABEL"
+                ) {
+                    updateSelectedTemplateCard();
+                    return;
+                }
+
+                /*
+                 * Clicking anywhere else on the
+                 * template selects the radio button.
+                 */
+                radio.checked = true;
+
+                radio.dispatchEvent(
+                    new Event(
+                        "change",
+                        {
+                            bubbles: true
+                        }
+                    )
+                );
+
+                updateSelectedTemplateCard();
+
+            }
+        );
+
+        radio.addEventListener(
+            "change",
+            function() {
+
+                updateSelectedTemplateCard();
+
+            }
+        );
+
+    });
+
+    updateSelectedTemplateCard();
+
+}
+
+
+/*==========================================================
+        UPDATE SELECTED TEMPLATE VISUAL
+==========================================================*/
+
+function updateSelectedTemplateCard() {
+
+    const cards =
+        document.querySelectorAll(
+            ".template-option"
+        );
+
+    cards.forEach(card => {
+
+        const radio =
+            card.querySelector(
+                'input[name="biodataTemplate"]'
+            );
+
+        if (
+            radio &&
+            radio.checked
+        ) {
+
+            card.classList.add(
+                "selected"
+            );
+
+        } else {
+
+            card.classList.remove(
+                "selected"
+            );
+
+        }
+
+    });
+
+}
+
 
 
 

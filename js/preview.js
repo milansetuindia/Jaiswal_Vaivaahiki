@@ -1,8 +1,57 @@
+function formatDOB(dateString) {
+    if (!dateString) {
+        return "";
+    }
+
+    const parts = dateString.split("-");
+
+    if (parts.length !== 3) {
+        return dateString;
+    }
+
+    const [year, month, day] = parts;
+
+    return `${day}-${month}-${year}`;
+}
+
 // =========================================
 // preview.js
 // =========================================
 
+
 function renderPreviewContainer() {
+
+
+    /* =========================================
+            SELECT BIODATA TEMPLATE
+    ========================================= */
+
+    const selectedTemplate =
+        biodata.template || "template1";
+
+
+    const config =
+        TEMPLATE_CONFIG[selectedTemplate] ||
+        TEMPLATE_CONFIG.template1;
+
+
+    /*
+    =============================================
+            UPDATE TEMPLATE BACKGROUND IMAGE
+    =============================================
+    */
+
+    const templateImage =
+        document.querySelector(".pdf-template");
+
+
+    if(templateImage && config){
+
+        templateImage.src = config.image;
+
+    }
+
+
 
     /* ==========================
             Personal Details
@@ -12,13 +61,22 @@ function renderPreviewContainer() {
         biodata.personal.fullName || "";
 
     document.getElementById("previewDOB").textContent =
-        biodata.personal.dob || "";
+        formatDOB(biodata.personal.dob);
 
     document.getElementById("previewTime").textContent =
         biodata.personal.timeOfBirth || "";
 
     document.getElementById("previewPlace").textContent =
         biodata.personal.placeOfBirth || "";
+
+    document.getElementById("previewReligion").textContent =
+        biodata.personal.religion || "";
+
+    document.getElementById("previewGotra").textContent =
+        biodata.personal.gotra || "";
+
+    document.getElementById("previewSubCaste").textContent =
+        biodata.personal.subCaste || "";
 
     document.getElementById("previewRashi").textContent =
         biodata.personal.rashi || "";
@@ -56,7 +114,7 @@ function renderPreviewContainer() {
 
 
     /* ==========================
-            Education & Career
+            Education
     ========================== */
 
     document.getElementById("previewHighestQualification").textContent =
@@ -77,12 +135,17 @@ function renderPreviewContainer() {
     document.getElementById("previewEducationOther").textContent =
         biodata.education.educationOther || "";
 
+
+
     /* ==========================
             Work & Career
     ========================== */
 
     document.getElementById("previewProfession").textContent =
         biodata.work.profession || "";
+
+    document.getElementById("previewDesignation").textContent =
+        biodata.work.designation || "";
 
     document.getElementById("previewOrganization").textContent =
         biodata.work.organization || "";
@@ -129,6 +192,9 @@ function renderPreviewContainer() {
     document.getElementById("previewPartnerLocation").textContent =
         biodata.partner.preferredLocation || "";
 
+    document.getElementById("previewPartnerCaste").textContent =
+        biodata.partner.preferredCaste || "";
+
     document.getElementById("previewPartnerOther").textContent =
         biodata.partner.otherExpectations || "";
 
@@ -146,6 +212,7 @@ function renderPreviewContainer() {
 
     document.getElementById("previewSenderMobile").textContent =
         biodata.declaration.senderMobile || "";
+
 
 
     /* ==========================
@@ -168,7 +235,18 @@ function renderPreviewContainer() {
         biodata.photos.profilePhoto?.preview ||
         "assets/images/defaults/default-profile.png";
 
-    applyPositions();
+
+
+    /* =========================================
+            APPLY SELECTED TEMPLATE POSITIONS
+    ========================================= */
+
+    applyPositions(
+
+        config.positions
+
+    );
+
 }
 
 
@@ -178,104 +256,204 @@ function renderPreviewContainer() {
 
 
 
+/* =========================================
+            APPLY TEMPLATE POSITIONS
+========================================= */
 
-function applyPositions() {
+function applyPositions(positions) {
 
-    Object.entries(POSITIONS).forEach(([id, p]) => {
 
-        const e = document.getElementById(id);
+    /*
+    =============================================
+            SAFETY FALLBACK
+    =============================================
+    */
 
-        if (!e) return;
+    if(!positions){
 
-        e.style.position = "absolute";
+        console.error(
 
-        e.style.left = p.left + "px";
+            "Template positions not found."
 
-        e.style.top = p.top + "px";
+        );
 
-        if (p.width)
-            e.style.width = p.width + "px";
+        return;
 
-        if (p.height)
-            e.style.height = p.height + "px";
+    }
 
-        if (p.fontSize)
-            e.style.fontSize = p.fontSize + "px";
 
-        if (p.fontWeight)
-            e.style.fontWeight = p.fontWeight;
+    Object.entries(positions).forEach(
 
-        e.style.lineHeight = "1.3";
+        ([id, p]) => {
 
-        /*=========================================
-                PREMIUM NAME STYLE
-        =========================================*/
 
-        if (id === "previewName") {
+            const e = document.getElementById(id);
 
-            e.style.fontFamily = "'Playfair Display', serif";
 
-            e.style.fontSize = "30px";
+            if(!e){
 
-            e.style.fontWeight = "650";
+                return;
 
-            e.style.color = "#003153";
+            }
 
-            e.style.letterSpacing = "1.5px";
 
-            e.style.textAlign = "left";
+            /*
+            =========================================
+                    BASIC POSITION
+            =========================================
+            */
 
-            e.style.fontStyle = "italic";
+            e.style.position = "absolute";
 
-            e.style.textShadow = "0 1px 0 #fff, 0 2px 3px rgba(0,0,0,0.35)";
+            e.style.left = p.left + "px";
 
-            e.style.textTransform = "uppercase";
-        }
+            e.style.top = p.top + "px";
 
-        /*=========================================
-                MULTI-LINE SUPPORT
-        =========================================*/
 
-        if (p.multiline) {
+            /*
+            =========================================
+                    WIDTH
+            =========================================
+            */
 
-            e.style.whiteSpace = "normal";
+            if(p.width){
 
-            e.style.wordBreak = "break-word";
+                e.style.width = p.width + "px";
 
-            e.style.overflowWrap = "break-word";
+            }
 
-            e.style.overflow = "hidden";
 
-            e.style.lineHeight = "1.3";
+            /*
+            =========================================
+                    HEIGHT
+            =========================================
+            */
 
-            if (p.height) {
+            if(p.height){
 
                 e.style.height = p.height + "px";
 
             }
 
+
+            /*
+            =========================================
+                    FONT SIZE
+            =========================================
+            */
+
+            if (p.fontSize !== undefined) {
+                e.style.setProperty("font-size", p.fontSize + "px", "important");
+            }
+
+
+            /*
+            =========================================
+                    FONT WEIGHT
+            =========================================
+            */
+
+            if (p.fontWeight !== undefined) {
+                e.style.setProperty("font-weight", p.fontWeight, "important");
+            }
+
+
+            /*
+            =========================================
+                    DEFAULT LINE HEIGHT
+            =========================================
+            */
+
+            e.style.lineHeight = "1.3";
+
+
+            /*
+            =========================================
+                    PREMIUM NAME STYLE
+            =========================================
+            */
+
+            if(id === "previewName") {
+
+
+                e.style.fontFamily =
+                    "'Playfair Display', serif";
+
+
+                /*
+                =====================================
+                NOTE:
+
+                Template-specific position values
+                can still control left/top/width.
+
+                These styles currently remain common
+                for all templates.
+                =====================================
+                */
+
+                e.style.color = "#003153";
+
+                e.style.textAlign = "left";
+
+                e.style.fontStyle = "italic";
+
+                e.style.textShadow =
+                    "0 1px 0 #fff, 0 2px 3px rgba(0,0,0,0.35)";
+
+                e.style.textTransform = "uppercase";
+
+            }
+
+
+            /*
+            =========================================
+                    MULTI-LINE SUPPORT
+            =========================================
+            */
+
+            if(p.multiline){
+
+
+                e.style.whiteSpace = "normal";
+
+                e.style.wordBreak = "break-word";
+
+                e.style.overflowWrap = "break-word";
+
+                e.style.overflow = "hidden";
+
+                e.style.lineHeight = "1.3";
+
+
+                if(p.height){
+
+                    e.style.height =
+                        p.height + "px";
+
+                }
+
+            }
+
+
+            else{
+
+
+                e.style.whiteSpace = "nowrap";
+
+                e.style.overflow = "visible";
+
+                e.style.display = "block";
+
+                e.style.webkitLineClamp = "";
+
+                e.style.webkitBoxOrient = "";
+
+            }
+
+
         }
 
-        else {
-
-            e.style.whiteSpace = "nowrap";
-
-            e.style.overflow = "visible";
-
-            e.style.display = "block";
-
-            e.style.webkitLineClamp = "";
-
-            e.style.webkitBoxOrient = "";
-
-        }
-
-    });
+    );
 
 }
-
-
-
-
-
-

@@ -341,27 +341,76 @@ async function processGalleryImage(
 
 async function handleProfilePhotoUpload(event) {
 
-    const file = event.target.files[0];
+    const file =
+        event.target.files[0];
 
-    const image = await processGalleryImage(
+    const fileNameElement =
+        document.getElementById(
+            "profilePhotoFileName"
+        );
 
-        file,
 
-        GALLERY_DOM.profilePreview
+    if (fileNameElement) {
 
-    );
+        if (file) {
+
+            fileNameElement.textContent =
+                file.name;
+
+            fileNameElement.dataset.selected =
+                "true";
+
+        } else {
+
+            delete fileNameElement.dataset.selected;
+
+        }
+
+    }
+
+
+    const image =
+        await processGalleryImage(
+
+            file,
+
+            GALLERY_DOM.profilePreview
+
+        );
+
 
     if (!image) {
+
+        if (fileNameElement) {
+
+            delete fileNameElement.dataset.selected;
+
+            if (
+                typeof updateCustomFileUploadLanguage ===
+                "function"
+            ) {
+
+                updateCustomFileUploadLanguage();
+
+            }
+
+        }
 
         return;
 
     }
 
-    GALLERY_STATE.profilePhoto = image;
+
+    GALLERY_STATE.profilePhoto =
+        image;
+
 
     biodata.photos.profilePhoto = {
+
         preview: image
+
     };
+
 
     autoSaveGallery();
 
@@ -369,11 +418,11 @@ async function handleProfilePhotoUpload(event) {
 
     synchronizeGalleryWithPDF();
 
-    galleryLog("Profile photo uploaded.");
+    galleryLog(
+        "Profile photo uploaded."
+    );
 
 }
-
-
 
 
 

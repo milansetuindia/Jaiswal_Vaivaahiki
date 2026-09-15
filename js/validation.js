@@ -275,19 +275,6 @@ window.isEmpty = isEmpty;
         STEP 2 - COMMON VALIDATION FUNCTIONS
 ==========================================================*/
 
-/*
-============================================================
-                VALIDATE NAME
-============================================================
-*/
-
-function isValidName(value){
-
-    const pattern = /^[A-Za-z ]+$/;
-
-    return pattern.test(value.trim());
-
-}
 
 
 
@@ -468,8 +455,6 @@ function isRequired(id){
                 EXPORT FUNCTIONS
 ============================================================
 */
-
-window.isValidName = isValidName;
 
 window.isValidIncome = isValidIncome;
 
@@ -735,17 +720,6 @@ function validatePersonal(){
         showError(
             "fullName",
             "Full Name is required."
-        );
-
-        valid = false;
-
-    }
-
-    else if(!isValidName(fullName)){
-
-        showError(
-            "fullName",
-            "Only alphabets and spaces are allowed."
         );
 
         valid = false;
@@ -1878,6 +1852,10 @@ document.addEventListener(
         initializeCharacterCounter("fullName", 20);
         initializeCharacterCounter("placeOfBirth", 25);
 
+        initializeCharacterCounter("religion", 20);
+        initializeCharacterCounter("gotra", 20);
+        initializeCharacterCounter("subCaste", 20);
+
         initializeCharacterCounter("rashi", 20);
         initializeCharacterCounter("gan", 20);
         initializeCharacterCounter("height", 20);
@@ -1886,7 +1864,7 @@ document.addEventListener(
 
         initializeCharacterCounter("language", 25);
         initializeCharacterCounter("hobbies", 25);
-        initializeCharacterCounter("other", 40);
+        initializeCharacterCounter("other", 25);
 
 
 
@@ -1901,6 +1879,7 @@ document.addEventListener(
 
         // Work & Career
         initializeCharacterCounter("profession", 25);
+        initializeCharacterCounter("designation", 25);
         initializeCharacterCounter("organization", 25);
         initializeCharacterCounter("workPlace", 25);
         initializeCharacterCounter("income", 25);
@@ -1918,6 +1897,7 @@ document.addEventListener(
         initializeCharacterCounter("preferredQualification", 25);
         initializeCharacterCounter("preferredProfession", 25);
         initializeCharacterCounter("preferredLocation", 25);
+        initializeCharacterCounter("preferredCaste", 25);
         initializeCharacterCounter("otherExpectations", 25);
 
         // Address Details

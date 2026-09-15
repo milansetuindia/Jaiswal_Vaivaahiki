@@ -2042,6 +2042,43 @@ img:hover{
 }
 
 
+/* ==========================================================
+   CUSTOM PROFILE PHOTO FILE UPLOAD
+========================================================== */
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 2px solid #198754;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.custom-file-button {
+    display: block;
+    padding: 8px 14px;
+    margin: 0;
+    background: #ffffff;
+    border-right: 1px solid #ced4da;
+    cursor: pointer;
+    white-space: nowrap;
+    font-weight: 400;
+}
+
+.custom-file-button:hover {
+    background: #f8f9fa;
+}
+
+.custom-file-name {
+    flex: 1;
+    padding: 8px 14px;
+    color: #333333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 
 /*==========================================================
@@ -2236,3 +2273,1478 @@ textarea.is-valid:focus{
     text-decoration: underline;
 
 }
+
+/* ==========================================================
+   LANGUAGE BUTTON
+========================================================== */
+
+.language-btn {
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.language-btn:hover {
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================================
+                SUPPORT JAISWAL VAIVAAHIKI
+========================================================== */
+
+.support-section {
+    padding: 70px 0;
+    background: #f5f6fa;
+}
+
+.support-wrapper {
+    position: relative;
+    background: #fffdfb;
+    border: 1px solid #f0dddd;
+    border-radius: 18px;
+    padding: 50px 35px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+
+/* Decorative Stars */
+
+.support-star {
+    position: absolute;
+    font-size: 32px;
+    color: #e7c47c;
+}
+
+.support-star-left {
+    top: 25px;
+    left: 22px;
+}
+
+.support-star-right {
+    bottom: 20px;
+    right: 22px;
+}
+
+
+/* Heading */
+
+.support-heading {
+    max-width: 700px;
+    margin: 0 auto 35px;
+}
+
+.support-heading h2 {
+    margin-bottom: 14px;
+    color: #990000;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.support-heading p {
+    margin-bottom: 8px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.support-hindi {
+    font-family: "Noto Sans Devanagari", sans-serif;
+}
+
+
+/* Donation Card */
+
+.donation-card {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #f0dddd;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 45px;
+}
+
+
+/* QR */
+
+.qr-section {
+    flex: 1;
+    text-align: center;
+}
+
+/* ==========================================================
+                    RESPONSIVE QR CODE
+========================================================== */
+
+.qr-box {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: min(300px, 100%);
+
+    aspect-ratio: 1 / 1;
+
+    margin: 0 auto;
+
+    padding: 10px;
+
+    border: 1px solid #efc76d;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    box-sizing: border-box;
+
+}
+
+.upi-qr {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+}
+
+
+/* ==========================================================
+                    MOBILE QR CODE
+========================================================== */
+
+@media (max-width: 576px) {
+
+    .qr-box {
+
+        width: min(300px, 100%);
+
+        padding: 8px;
+
+    }
+
+    .upi-qr {
+
+        width: 100%;
+
+        height: 100%;
+
+    }
+
+}
+
+
+.qr-title {
+    margin: 0 0 8px;
+    font-size: 6px;
+    color: #555;
+}
+
+
+
+
+.qr-caption {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: #777;
+}
+
+
+/* UPI Section */
+
+.upi-section {
+    flex: 1;
+    text-align: center;
+}
+
+.heart-icon {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #f1d18b;
+    border-radius: 50%;
+
+    background: #fff8e8;
+    font-size: 20px;
+}
+
+.upi-section h3 {
+    margin-bottom: 8px;
+    color: #990000;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.upi-section > p {
+    margin-bottom: 18px;
+    color: #666;
+    font-size: 12px;
+}
+
+
+/* UPI ID */
+
+.upi-id-box {
+    padding: 9px 15px;
+    margin-bottom: 10px;
+
+    border: 1px solid #f0dddd;
+    border-radius: 8px;
+    background: #fffaf7;
+}
+
+.upi-id-box span {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 10px;
+    color: #777;
+}
+
+.upi-id-box strong {
+    font-size: 12px;
+    color: #990000;
+}
+
+
+/* Copy Button */
+
+.copy-upi-btn {
+    padding: 7px 15px;
+    margin-bottom: 8px;
+
+    border: 1px solid #e3a63a;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #990000;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.copy-upi-btn:hover {
+    background: #fff7e8;
+}
+
+
+/* Donate Button */
+
+.donate-upi-btn {
+    display: block;
+    width: 100%;
+    max-width: 175px;
+
+    margin: 0 auto;
+    padding: 10px 15px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #a90000;
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.donate-upi-btn:hover {
+    background: #850000;
+}
+
+
+/* Note */
+
+.upi-note {
+    margin-top: 12px;
+    color: #888;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+
+/* ==========================================================
+                    RESPONSIVE
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .support-section {
+        padding: 45px 15px;
+    }
+
+    .support-wrapper {
+        padding: 35px 18px;
+    }
+
+    .support-heading h2 {
+        font-size: 20px;
+        letter-spacing: 1px;
+    }
+
+    .support-heading p {
+        font-size: 13px;
+    }
+
+    .donation-card {
+        flex-direction: column;
+        gap: 30px;
+        padding: 25px 18px;
+    }
+
+    .qr-section,
+    .upi-section {
+        width: 100%;
+    }
+
+    .support-star {
+        font-size: 25px;
+    }
+
+}
+
+
+
+
+
+
+/* ==========================================================
+            STEP 9 - TEMPLATE SELECTION
+========================================================== */
+
+
+/*
+ * Main template card
+ */
+
+.template-option {
+
+    position: relative;
+
+    height: 100%;
+
+    padding: 12px;
+
+    background: #ffffff;
+
+    border: 2px solid #dee2e6;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        all 0.25s ease;
+
+}
+
+
+/*
+ * Hover effect
+ */
+
+.template-option:hover {
+
+    border-color: #7B1113;
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0, 0, 0, 0.12);
+
+}
+
+
+/*
+ * Selected template
+ */
+
+.template-option.selected {
+
+    border-color: #7B1113;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(123, 17, 19, 0.15);
+
+}
+
+
+/*
+ * Sample biodata image
+ */
+
+.template-preview {
+
+    width: 100%;
+
+    display: block;
+
+    cursor: pointer;
+
+    border-radius: 8px;
+
+}
+
+
+/*
+ * Radio button + template name
+ */
+
+.template-select-area {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 12px;
+
+    padding: 8px;
+
+}
+
+
+/*
+ * Radio button
+ */
+
+.template-select-area .form-check-input {
+
+    cursor: pointer;
+
+    margin: 0;
+
+}
+
+
+/*
+ * Template name
+ */
+
+.template-select-area .form-check-label {
+
+    cursor: pointer;
+
+    margin: 0;
+
+    font-weight: 600;
+
+}
+
+
+/*
+ * Mobile
+ */
+
+@media (max-width: 767px) {
+
+    .template-option {
+
+        padding: 10px;
+
+    }
+
+}
+
+
+
+
+
+
+/* ==========================================================
+        JOIN JAISWAL VAIVAAHIKI PORTAL
+========================================================== */
+
+.join-portal-section {
+    padding: 20px 0 70px !important;
+    background: #f5f6fa !important;
+}
+
+
+/* Main outer card */
+
+.join-portal-wrapper {
+    position: relative;
+
+    width: 100%;
+    max-width: 1120px;
+
+    margin: 0 auto;
+
+    padding: 55px 40px 60px;
+
+    background: #fffdfb;
+
+    border: 1px solid #f0dddd;
+    border-radius: 18px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+
+    overflow: hidden;
+}
+
+
+/* ==========================================================
+                    DECORATIVE STARS
+========================================================== */
+
+.join-star {
+    position: absolute;
+
+    color: #e7c47c;
+
+    font-size: 30px;
+
+    line-height: 1;
+
+    z-index: 1;
+}
+
+.join-star-left {
+    top: 27px;
+    left: 25px;
+}
+
+.join-star-right {
+    right: 25px;
+    bottom: 27px;
+}
+
+
+/* ==========================================================
+                        CONTENT
+========================================================== */
+
+.join-portal-heading {
+    position: relative;
+
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+
+/* Small heading */
+
+.join-label {
+    margin-bottom: 15px;
+
+    color: #990000;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    line-height: 1.4;
+}
+
+
+/* Main heading */
+
+.join-portal-heading h2 {
+    margin: 0 auto 20px;
+
+    color: #990000;
+
+    font-size: 36px;
+    font-weight: 700;
+
+    line-height: 1.25;
+
+    letter-spacing: 0;
+}
+
+
+/* Watch text */
+
+.watch-biodata-text {
+    margin: 0 0 18px !important;
+
+    color: #666;
+
+    font-size: 17px;
+
+    line-height: 1.6;
+}
+
+
+/* ==========================================================
+                WATCH BIODATA LINK
+========================================================== */
+
+.create-biodata-link {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-bottom: 28px;
+
+    color: #990000;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+.create-biodata-link i {
+    font-size: 15px;
+}
+
+.create-biodata-link:hover {
+    color: #700000;
+
+    text-decoration: underline;
+}
+
+
+/* ==========================================================
+                    WHATSAPP AREA
+========================================================== */
+
+.whatsapp-contact {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-top: 5px;
+}
+
+
+/* Phone number */
+
+.whatsapp-number {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #990000;
+
+    font-size: 23px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+.whatsapp-number i {
+    color: #25D366;
+
+    font-size: 25px;
+}
+
+
+/* WhatsApp button */
+
+.whatsapp-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    min-width: 300px;
+
+    padding: 15px 28px;
+
+    background: #a90000;
+
+    color: #ffffff;
+
+    border: none;
+    border-radius: 7px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.whatsapp-button i {
+    font-size: 18px;
+}
+
+.whatsapp-button:hover {
+    background: #850000;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================================
+                    MOBILE
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .join-portal-section {
+        padding: 15px 12px 45px !important;
+    }
+
+    .join-portal-wrapper {
+        padding: 40px 20px 45px;
+
+        border-radius: 16px;
+    }
+
+    .join-label {
+        font-size: 13px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .join-portal-heading h2 {
+        font-size: 27px;
+
+        line-height: 1.3;
+    }
+
+    .watch-biodata-text {
+        font-size: 15px;
+    }
+
+    .create-biodata-link {
+        font-size: 15px;
+
+        margin-bottom: 25px;
+    }
+
+    .whatsapp-contact {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    .whatsapp-number {
+        font-size: 21px;
+    }
+
+    .whatsapp-button {
+        width: 100%;
+
+        min-width: 0;
+        max-width: 320px;
+
+        padding: 13px 20px;
+
+        font-size: 14px;
+    }
+
+    .join-star {
+        font-size: 24px;
+    }
+
+    .join-star-left {
+        top: 20px;
+        left: 15px;
+    }
+
+    .join-star-right {
+        right: 15px;
+        bottom: 20px;
+    }
+
+}
+
+
+/* ==========================================================
+                    SMALL MOBILE
+========================================================== */
+
+@media (max-width: 480px) {
+
+    .join-portal-wrapper {
+        padding: 35px 15px 40px;
+    }
+
+    .join-portal-heading h2 {
+        font-size: 23px;
+    }
+
+    .join-label {
+        font-size: 12px;
+    }
+
+    .watch-biodata-text {
+        font-size: 14px;
+    }
+
+    .whatsapp-number {
+        font-size: 20px;
+    }
+
+}
+
+
+
+
+
+
+
+/*==========================================================
+                WHATSAPP POPUP
+==========================================================*/
+
+
+/*==========================================================
+                PREVENT BACKGROUND SCROLL
+==========================================================*/
+
+body.whatsapp-popup-open {
+
+    overflow: hidden;
+
+}
+
+
+/*==========================================================
+                OVERLAY
+==========================================================*/
+
+.whatsapp-choice-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background:
+        rgba(0, 0, 0, 0.58);
+
+    backdrop-filter:
+        blur(4px);
+
+    -webkit-backdrop-filter:
+        blur(4px);
+
+    z-index: 999999;
+
+    animation:
+        whatsappOverlayIn 0.2s ease-out;
+
+}
+
+
+/*==========================================================
+                OVERLAY ANIMATION
+==========================================================*/
+
+@keyframes whatsappOverlayIn {
+
+    from {
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/*==========================================================
+                MAIN POPUP
+==========================================================*/
+
+.whatsapp-choice-popup {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 420px;
+
+    box-sizing: border-box;
+
+    padding: 34px 28px 27px;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.25);
+
+    animation:
+        whatsappPopupIn 0.25s ease-out;
+
+}
+
+
+/*==========================================================
+                POPUP ANIMATION
+==========================================================*/
+
+@keyframes whatsappPopupIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(15px)
+            scale(0.96);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/*==========================================================
+                CLOSE BUTTON
+==========================================================*/
+
+.whatsapp-popup-close {
+
+    position: absolute;
+
+    top: 14px;
+
+    right: 15px;
+
+    width: 34px;
+
+    height: 34px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #777777;
+
+    font-size: 19px;
+
+    cursor: pointer;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.whatsapp-popup-close:hover {
+
+    background: #f3f3f3;
+
+    color: #333333;
+
+}
+
+
+/*==========================================================
+                HEADER
+==========================================================*/
+
+.whatsapp-choice-header {
+
+    text-align: center;
+
+    padding: 0 10px;
+
+}
+
+
+/*==========================================================
+                WHATSAPP ROUND ICON
+==========================================================*/
+
+.whatsapp-choice-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    margin: 0 auto 17px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #e9faef;
+
+    color: #25d366;
+
+    font-size: 30px;
+
+}
+
+
+/*==========================================================
+                TITLE
+==========================================================*/
+
+.whatsapp-choice-header h3 {
+
+    margin: 0;
+
+    padding: 0;
+
+    color: #8f0000;
+
+    font-size: 26px;
+
+    line-height: 1.25;
+
+    font-weight: 750;
+
+    letter-spacing: -0.3px;
+
+}
+
+
+/*==========================================================
+                SUBTITLE
+==========================================================*/
+
+.whatsapp-choice-header p {
+
+    margin: 9px 0 22px;
+
+    padding: 0;
+
+    color: #777777;
+
+    font-size: 14.5px;
+
+    line-height: 1.5;
+
+}
+
+
+/*==========================================================
+                OPTIONS CONTAINER
+==========================================================*/
+
+.whatsapp-choice-options {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 11px;
+
+}
+
+
+/*==========================================================
+                OPTION CARD
+==========================================================*/
+
+.whatsapp-option-card {
+
+    width: 100%;
+
+    min-height: 70px;
+
+    padding: 12px 13px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    text-align: left;
+
+    border: 1px solid #eadede;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+/*==========================================================
+                OPTION HOVER
+==========================================================*/
+
+.whatsapp-option-card:hover {
+
+    border-color: #d9baba;
+
+    background: #fffafa;
+
+    box-shadow:
+        0 5px 18px rgba(100, 0, 0, 0.08);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/*==========================================================
+                OPTION ACTIVE
+==========================================================*/
+
+.whatsapp-option-card:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/*==========================================================
+                OPTION ICON
+==========================================================*/
+
+.whatsapp-option-icon {
+
+    flex: 0 0 auto;
+
+    width: 43px;
+
+    height: 43px;
+
+    margin-right: 12px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #e9faef;
+
+    color: #25d366;
+
+    font-size: 22px;
+
+}
+
+
+/*==========================================================
+                OPTION CONTENT
+==========================================================*/
+
+.whatsapp-option-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+/*==========================================================
+                OPTION TITLE
+==========================================================*/
+
+.whatsapp-option-title {
+
+    margin-bottom: 2px;
+
+    color: #8f0000;
+
+    font-size: 16px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+}
+
+
+/*==========================================================
+                OPTION DESCRIPTION
+==========================================================*/
+
+.whatsapp-option-description {
+
+    color: #858585;
+
+    font-size: 13px;
+
+    line-height: 1.35;
+
+}
+
+
+/*==========================================================
+                RIGHT ARROW
+==========================================================*/
+
+.whatsapp-option-arrow {
+
+    flex: 0 0 auto;
+
+    margin-left: 10px;
+
+    color: #aaaaaa;
+
+    font-size: 13px;
+
+}
+
+
+/*==========================================================
+                CANCEL BUTTON
+==========================================================*/
+
+.whatsapp-cancel-btn {
+
+    display: block;
+
+    width: 100%;
+
+    margin-top: 19px;
+
+    padding: 8px 10px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #777777;
+
+    font-size: 15px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    border-radius: 8px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.whatsapp-cancel-btn:hover {
+
+    background: #f5f5f5;
+
+    color: #444444;
+
+}
+
+
+/*==========================================================
+                MOBILE
+==========================================================*/
+
+@media (max-width: 480px) {
+
+    .whatsapp-choice-overlay {
+
+        padding: 15px;
+
+    }
+
+
+    .whatsapp-choice-popup {
+
+        max-width: 100%;
+
+        padding: 30px 18px 23px;
+
+        border-radius: 18px;
+
+    }
+
+
+    .whatsapp-popup-close {
+
+        top: 11px;
+
+        right: 11px;
+
+    }
+
+
+    .whatsapp-choice-icon {
+
+        width: 54px;
+
+        height: 54px;
+
+        margin-bottom: 14px;
+
+        font-size: 28px;
+
+    }
+
+
+    .whatsapp-choice-header h3 {
+
+        font-size: 23px;
+
+    }
+
+
+    .whatsapp-choice-header p {
+
+        margin-top: 8px;
+
+        margin-bottom: 19px;
+
+        font-size: 14px;
+
+    }
+
+
+    .whatsapp-option-card {
+
+        min-height: 67px;
+
+        padding: 11px;
+
+    }
+
+
+    .whatsapp-option-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        margin-right: 10px;
+
+        font-size: 20px;
+
+    }
+
+
+    .whatsapp-option-title {
+
+        font-size: 15px;
+
+    }
+
+
+    .whatsapp-option-description {
+
+        font-size: 12.5px;
+
+    }
+
+
+    .whatsapp-option-arrow {
+
+        font-size: 12px;
+
+    }
+
+
+    .whatsapp-cancel-btn {
+
+        margin-top: 16px;
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+

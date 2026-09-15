@@ -45,7 +45,6 @@ const STORAGE_CONSTANTS = {
 ============================================================
 */
 
-
 document.addEventListener(
 
     "DOMContentLoaded",
@@ -66,7 +65,6 @@ document.addEventListener(
             INITIALIZE STORAGE MODULE
 ============================================================
 */
-
 
 function initializeStorage(){
 
@@ -194,8 +192,6 @@ function saveBiodata(){
 }
 
 
-
-
 /*
 ============================================================
             CHECK SAVED BIODATA
@@ -213,7 +209,6 @@ function hasSavedBiodata(){
 }
 
 
-
 /*
 ============================================================
             GET RAW STORAGE DATA
@@ -229,7 +224,6 @@ function getSavedBiodata(){
     );
 
 }
-
 
 
 /*
@@ -319,8 +313,6 @@ function initializeAutoSave(){
 ============================================================
 */
 
-
-
 function autoSaveBiodata(){
 
     try{
@@ -337,7 +329,25 @@ function autoSaveBiodata(){
 
         saveContactData();
 
-        saveDeclarationData();   // <-- ADD THIS
+        saveDeclarationData();
+
+        /*
+        ============================================
+                TEMPLATE SUPPORT
+        ============================================
+        */
+
+        const selectedTemplate = document.querySelector(
+
+            'input[name="biodataTemplate"]:checked'
+
+        );
+
+        if(selectedTemplate){
+
+            biodata.template = selectedTemplate.value;
+
+        }
 
         saveBiodata();
 
@@ -346,14 +356,16 @@ function autoSaveBiodata(){
     catch(error){
 
         console.error(
+
             "Auto Save Failed",
+
             error
+
         );
 
     }
 
 }
-
 
 
 
@@ -437,6 +449,17 @@ function loadBiodata(){
         biodata.photos =
             parsedData.photos || {};
 
+
+        /*
+        ============================================
+                TEMPLATE SUPPORT
+        ============================================
+        */
+
+        biodata.template =
+            parsedData.template || "template1";
+
+
         storageLog(
 
             "Biodata Loaded Successfully",
@@ -464,7 +487,6 @@ function loadBiodata(){
     }
 
 }
-
 
 
 /*
@@ -509,7 +531,6 @@ function checkSavedBiodata(){
 ============================================================
 */
 
-
 function restoreForm(){
 
     restoreSection(biodata.personal);
@@ -528,16 +549,53 @@ function restoreForm(){
 
     restorePhotos();
 
+
+    /*
+    ========================================================
+                    RESTORE TEMPLATE
+    ========================================================
+    */
+
+    // ======================================================
+    // RESTORE TEMPLATE ACCORDING TO CURRENT WEBSITE LANGUAGE
+    // ======================================================
+
+    const currentLanguage = getCurrentLanguage();
+
+    const allowedTemplates =
+        currentLanguage === "hi"
+            ? ["template5", "template6", "template7"]
+            : ["template1", "template2", "template3", "template4"];
+
+    // If saved template belongs to another language,
+    // use the first template of the current language.
+    if (!allowedTemplates.includes(biodata.template)) {
+        biodata.template =
+            currentLanguage === "hi"
+                ? "template5"
+                : "template1";
+    }
+
+    const selectedTemplate = document.querySelector(
+        `input[name="biodataTemplate"][value="${biodata.template}"]`
+    );
+
+    if (selectedTemplate) {
+        selectedTemplate.checked = true;
+    }
+
+
     currentStep = 1;
+
     showStep(currentStep);
 
     storageLog(
+
         "Form Restored Successfully"
+
     );
 
 }
-
-
 
 
 /*
@@ -566,12 +624,44 @@ function restoreSection(section){
 
         const time = parts[0].split(":");
 
-        document.getElementById("birthHour").value = time[0];
+        const birthHour = document.getElementById(
 
-        document.getElementById("birthMinute").value = time[1];
+            "birthHour"
 
-        document.getElementById("birthPeriod").value = parts[1];
+        );
+
+        const birthMinute = document.getElementById(
+
+            "birthMinute"
+
+        );
+
+        const birthPeriod = document.getElementById(
+
+            "birthPeriod"
+
+        );
+
+        if(birthHour){
+
+            birthHour.value = time[0];
+
+        }
+
+        if(birthMinute){
+
+            birthMinute.value = time[1];
+
+        }
+
+        if(birthPeriod){
+
+            birthPeriod.value = parts[1];
+
+        }
+
     }
+
 
     for(const id in section){
 
@@ -601,16 +691,11 @@ function restoreSection(section){
 
             element.value = section[id];
 
-
-
         }
 
     }
 
 }
-
-
-
 
 
 /*
@@ -623,7 +708,7 @@ function restorePhotos(){
 
     const photoMap = {
 
-        profilePhoto : "previewProfilePhoto",
+        profilePhoto : "previewProfilePhoto"
 
     };
 
@@ -664,10 +749,6 @@ function restorePhotos(){
     }
 
 }
-
-
-
-
 
 
 
@@ -897,6 +978,15 @@ function exportDraft(){
 
         /*
         ============================================
+                SAVE LATEST FORM DATA FIRST
+        ============================================
+        */
+
+        autoSaveBiodata();
+
+
+        /*
+        ============================================
                 CONVERT TO JSON
         ============================================
         */
@@ -910,6 +1000,7 @@ function exportDraft(){
             4
 
         );
+
 
         /*
         ============================================
@@ -928,6 +1019,7 @@ function exportDraft(){
             }
 
         );
+
 
         /*
         ============================================
@@ -952,6 +1044,7 @@ function exportDraft(){
         document.body.removeChild(link);
 
         URL.revokeObjectURL(url);
+
 
         storageLog(
 
@@ -978,8 +1071,6 @@ function exportDraft(){
     }
 
 }
-
-
 
 
 /*
@@ -1036,7 +1127,11 @@ function importDraft(event){
 
     if(file.type !== "application/json"){
 
-        alert("Please select a valid JSON file.");
+        alert(
+
+            "Please select a valid JSON file."
+
+        );
 
         event.target.value = "";
 
@@ -1055,6 +1150,13 @@ function importDraft(event){
                 e.target.result
 
             );
+
+
+            /*
+            ============================================
+                    IMPORT BIODATA DATA
+            ============================================
+            */
 
             biodata.personal =
                 importedData.personal || {};
@@ -1080,9 +1182,21 @@ function importDraft(event){
             biodata.photos =
                 importedData.photos || {};
 
+
+            /*
+            ============================================
+                    IMPORT TEMPLATE
+            ============================================
+            */
+
+            biodata.template =
+                importedData.template || "template1";
+
+
             saveBiodata();
 
             restoreForm();
+
 
             storageLog(
 
@@ -1091,6 +1205,7 @@ function importDraft(event){
                 biodata
 
             );
+
 
             alert(
 
@@ -1125,7 +1240,6 @@ function importDraft(event){
 }
 
 
-
 /*
 ============================================================
         INITIALIZE IMPORT BUTTON
@@ -1158,9 +1272,6 @@ function initializeImportButton(){
 
 
 
-
-
-
 /*==========================================================
             STEP 9 - CLEAR DRAFT
 ==========================================================*/
@@ -1182,6 +1293,7 @@ function clearDraft(){
         */
 
         clearStorage();
+
 
         /*
         ============================================
@@ -1205,7 +1317,18 @@ function clearDraft(){
 
         biodata.photos = {};
 
+
+        /*
+        ============================================
+                RESET TEMPLATE
+        ============================================
+        */
+
+        biodata.template = "template1";
+
+
         GALLERY_STATE.profilePhoto = null;
+
 
         /*
         ============================================
@@ -1215,6 +1338,7 @@ function clearDraft(){
 
         resetBiodataForm();
 
+
         /*
         ============================================
                 RESET PHOTO PREVIEWS
@@ -1222,6 +1346,26 @@ function clearDraft(){
         */
 
         resetPhotoPreviews();
+
+
+        /*
+        ============================================
+                RESET TEMPLATE SELECTION
+        ============================================
+        */
+
+        const defaultTemplate = document.querySelector(
+
+            'input[name="biodataTemplate"][value="template1"]'
+
+        );
+
+        if(defaultTemplate){
+
+            defaultTemplate.checked = true;
+
+        }
+
 
         storageLog(
 
@@ -1250,8 +1394,6 @@ function clearDraft(){
 }
 
 
-
-
 /*
 ============================================================
             RESET COMPLETE FORM
@@ -1273,7 +1415,6 @@ function resetBiodataForm(){
     }
 
 }
-
 
 
 /*
@@ -1305,7 +1446,6 @@ function resetPhotoPreviews(){
     });
 
 }
-
 
 
 /*
@@ -1351,8 +1491,6 @@ function initializeClearButton(){
     );
 
 }
-
-
 
 
 
@@ -1454,6 +1592,4 @@ function initializeStorageModule(){
     }
 
 }
-
-
 
