@@ -1,232 +1,342 @@
 /*==========================================================
-                APP.JS
-                STEP 20 - NAVBAR
+                        APP.JS
+              JAISWAL VAIVAAHIKI
+          CORE WEBSITE UI FUNCTIONALITY
+==========================================================*/
+
+
+/*==========================================================
+                    APPLICATION START
 ==========================================================*/
 
 document.addEventListener("DOMContentLoaded", () => {
 
     initializeNavbar();
 
+    initializeScrollTopButton();
+
+    initializeFAQ();
+
+    initializeToast();
+
+    initializeTheme();
+
+    initializeLoader();
+
+    initializeScrollAnimations();
+
+    initializeHeroParallax();
+
+    initializeSupportSection();
+
 });
 
-
 /*==========================================================
-                INITIALIZE NAVBAR
+                    NAVBAR
 ==========================================================*/
 
-function initializeNavbar(){
+function initializeNavbar() {
 
-    const navbar = document.querySelector(".custom-navbar");
+    const navbar =
+        document.querySelector(".custom-navbar");
 
-    const navLinks = document.querySelectorAll(".nav-link");
+    const navLinks =
+        document.querySelectorAll(".nav-link");
 
-    const navbarCollapse = document.querySelector(".navbar-collapse");
-
-    const bsCollapse = navbarCollapse
-        ? new bootstrap.Collapse(navbarCollapse, {
-            toggle: false
-        })
-        : null;
+    const navbarCollapse =
+        document.querySelector(".navbar-collapse");
 
 
-    /*==========================================
-            NAVBAR SHADOW ON SCROLL
-    ==========================================*/
+    if (!navbar) {
+        return;
+    }
 
-    window.addEventListener("scroll", () => {
 
-        if(window.scrollY > 40){
+    /*
+        Bootstrap mobile navbar controller
+    */
+
+    const bsCollapse =
+        navbarCollapse
+            ? new bootstrap.Collapse(
+                navbarCollapse,
+                {
+                    toggle: false
+                }
+            )
+            : null;
+
+
+    /*======================================================
+                    NAVBAR SHADOW
+    ======================================================*/
+
+    function updateNavbarShadow() {
+
+        if (window.scrollY > 40) {
 
             navbar.style.boxShadow =
                 "0 8px 25px rgba(0,0,0,.20)";
 
         }
-
-        else{
+        else {
 
             navbar.style.boxShadow =
                 "0 4px 18px rgba(0,0,0,.15)";
 
         }
 
-    });
+    }
 
 
-    /*==========================================
-            SMOOTH SCROLL
-    ==========================================*/
+    updateNavbarShadow();
+
+
+    window.addEventListener(
+        "scroll",
+        updateNavbarShadow,
+        { passive: true }
+    );
+
+
+    /*======================================================
+                    SMOOTH SCROLL
+    ======================================================*/
 
     navLinks.forEach(link => {
 
-        link.addEventListener("click", function(e){
+        link.addEventListener(
+            "click",
+            function(event) {
 
-            const targetId = this.getAttribute("href");
+                const targetId =
+                    this.getAttribute("href");
 
-            if(!targetId.startsWith("#")) return;
 
-            const target = document.querySelector(targetId);
+                /*
+                    Ignore external links and
+                    normal page links.
+                */
 
-            if(target){
+                if (
+                    !targetId ||
+                    !targetId.startsWith("#")
+                ) {
+                    return;
+                }
 
-                e.preventDefault();
+
+                const target =
+                    document.querySelector(
+                        targetId
+                    );
+
+
+                if (!target) {
+                    return;
+                }
+
+
+                event.preventDefault();
+
 
                 target.scrollIntoView({
 
-                    behavior:"smooth",
+                    behavior: "smooth",
 
-                    block:"start"
+                    block: "start"
 
                 });
 
+
+                /*
+                    Close mobile navbar
+                */
+
+                if (
+                    window.innerWidth < 992 &&
+                    bsCollapse
+                ) {
+
+                    bsCollapse.hide();
+
+                }
+
             }
-
-            /*==========================
-                CLOSE MOBILE MENU
-            ==========================*/
-
-            if(window.innerWidth < 992 && bsCollapse){
-
-                bsCollapse.hide();
-
-            }
-
-        });
+        );
 
     });
 
 
-    /*==========================================
-            ACTIVE MENU HIGHLIGHT
-    ==========================================*/
+    /*======================================================
+                    ACTIVE MENU
+    ======================================================*/
 
-    const sections = document.querySelectorAll("section");
+    const sections =
+        document.querySelectorAll(
+            "section[id]"
+        );
 
-    window.addEventListener("scroll", () => {
 
-        let current = "";
+    function updateActiveNav() {
+
+        let currentSection = "";
+
 
         sections.forEach(section => {
 
-            const sectionTop = section.offsetTop - 120;
+            const sectionTop =
+                section.offsetTop - 120;
 
-            if(window.scrollY >= sectionTop){
 
-                current = section.getAttribute("id");
+            if (
+                window.scrollY >= sectionTop
+            ) {
+
+                currentSection =
+                    section.getAttribute("id");
 
             }
 
         });
+
 
         navLinks.forEach(link => {
 
-            link.classList.remove("active");
+            link.classList.remove(
+                "active"
+            );
 
-            if(link.getAttribute("href") === "#" + current){
 
-                link.classList.add("active");
+            if (
+                link.getAttribute("href") ===
+                "#" + currentSection
+            ) {
+
+                link.classList.add(
+                    "active"
+                );
 
             }
 
         });
 
-    });
+    }
+
+
+    updateActiveNav();
+
+
+    window.addEventListener(
+        "scroll",
+        updateActiveNav,
+        { passive: true }
+    );
 
 }
 
 
 /*==========================================================
-            STEP 21 - SCROLL TO TOP BUTTON
+                SCROLL TO TOP BUTTON
 ==========================================================*/
 
-document.addEventListener("DOMContentLoaded", () => {
+function initializeScrollTopButton() {
 
-    initializeScrollTopButton();
+    const scrollTopBtn =
+        document.getElementById(
+            "scrollTopBtn"
+        );
 
-});
+
+    if (!scrollTopBtn) {
+        return;
+    }
+
+
+    function updateScrollTopButton() {
+
+        if (window.scrollY > 300) {
+
+            scrollTopBtn.classList.add(
+                "show"
+            );
+
+        }
+        else {
+
+            scrollTopBtn.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+
+
+    updateScrollTopButton();
+
+
+    window.addEventListener(
+        "scroll",
+        updateScrollTopButton,
+        { passive: true }
+    );
+
+
+    scrollTopBtn.addEventListener(
+        "click",
+        () => {
+
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+        }
+    );
+
+}
 
 
 /*==========================================================
-            INITIALIZE SCROLL BUTTON
+                    FAQ
 ==========================================================*/
 
-function initializeScrollTopButton(){
+function initializeFAQ() {
 
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    const accordionButtons =
+        document.querySelectorAll(
+            ".accordion-button"
+        );
 
-    if(!scrollTopBtn){
+
+    if (
+        accordionButtons.length === 0
+    ) {
 
         return;
 
     }
 
-    /*==========================================
-            SHOW / HIDE BUTTON
-    ==========================================*/
-
-    window.addEventListener("scroll", () => {
-
-        if(window.scrollY > 300){
-
-            scrollTopBtn.classList.add("show");
-
-        }
-
-        else{
-
-            scrollTopBtn.classList.remove("show");
-
-        }
-
-    });
-
-    /*==========================================
-            SCROLL TO TOP
-    ==========================================*/
-
-    scrollTopBtn.addEventListener("click", () => {
-
-        window.scrollTo({
-
-            top:0,
-
-            behavior:"smooth"
-
-        });
-
-    });
-
-}
-
-
-
-/*==========================================================
-            STEP 22 - FAQ & TOAST
-==========================================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    initializeFAQ();
-
-    initializeToast();
-
-});
-
-
-/*==========================================================
-                FAQ ACCORDION
-==========================================================*/
-
-function initializeFAQ(){
-
-    const accordionButtons = document.querySelectorAll(".accordion-button");
 
     accordionButtons.forEach(button => {
 
-        button.addEventListener("click", () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            button.blur();
+                /*
+                    Removes focus outline after
+                    clicking an accordion item.
+                */
 
-        });
+                button.blur();
+
+            }
+        );
 
     });
 
@@ -234,114 +344,144 @@ function initializeFAQ(){
 
 
 /*==========================================================
-                TOAST NOTIFICATION
+                    TOAST
 ==========================================================*/
 
-function initializeToast(){
+function initializeToast() {
 
-    const toastElement = document.getElementById("appToast");
+    const toastElement =
+        document.getElementById(
+            "appToast"
+        );
 
-    if(!toastElement){
+
+    if (!toastElement) {
+        return;
+    }
+
+
+    /*
+        Bootstrap may not be available on pages
+        where app.js is reused.
+    */
+
+    if (
+        typeof bootstrap === "undefined" ||
+        !bootstrap.Toast
+    ) {
 
         return;
 
     }
 
-    const toast = new bootstrap.Toast(toastElement, {
 
-        delay:3500
+    const toast =
+        new bootstrap.Toast(
+            toastElement,
+            {
+                delay: 3500
+            }
+        );
 
-    });
+
+    /*
+        Show the welcome toast after
+        the page has loaded.
+    */
 
     setTimeout(() => {
 
         toast.show();
 
-    },800);
+    }, 800);
 
 }
 
 
-
 /*==========================================================
-            STEP 23 - THEME TOGGLE
+                    THEME TOGGLE
 ==========================================================*/
 
-document.addEventListener("DOMContentLoaded", () => {
+function initializeTheme() {
 
-    initializeTheme();
+    const themeButton =
+        document.getElementById(
+            "themeBtn"
+        );
 
-});
 
-
-/*==========================================================
-                INITIALIZE THEME
-==========================================================*/
-
-function initializeTheme(){
-
-    const themeButton = document.getElementById("themeBtn");
-
-    if(!themeButton){
-
+    if (!themeButton) {
         return;
-
     }
 
-    /*==========================================
-            LOAD SAVED THEME
-    ==========================================*/
 
-    const savedTheme = localStorage.getItem("theme");
+    const savedTheme =
+        localStorage.getItem("theme");
 
-    if(savedTheme === "dark"){
+
+    if (savedTheme === "dark") {
 
         enableDarkTheme();
 
     }
-
-    else{
+    else {
 
         enableLightTheme();
 
     }
 
-    /*==========================================
-            BUTTON CLICK
-    ==========================================*/
 
-    themeButton.addEventListener("click", () => {
+    themeButton.addEventListener(
+        "click",
+        () => {
 
-        if(document.body.classList.contains("dark-theme")){
+            const darkModeEnabled =
+                document.body.classList.contains(
+                    "dark-theme"
+                );
 
-            enableLightTheme();
+
+            if (darkModeEnabled) {
+
+                enableLightTheme();
+
+            }
+            else {
+
+                enableDarkTheme();
+
+            }
 
         }
-
-        else{
-
-            enableDarkTheme();
-
-        }
-
-    });
+    );
 
 }
 
 
 /*==========================================================
-                DARK THEME
+                    DARK THEME
 ==========================================================*/
 
-function enableDarkTheme(){
+function enableDarkTheme() {
 
-    document.body.classList.add("dark-theme");
+    document.body.classList.add(
+        "dark-theme"
+    );
 
-    localStorage.setItem("theme","dark");
 
-    const button = document.getElementById("themeBtn");
+    localStorage.setItem(
+        "theme",
+        "dark"
+    );
 
-    if(button){
+
+    const button =
+        document.getElementById(
+            "themeBtn"
+        );
+
+
+    if (button) {
 
         button.innerHTML = "☀️";
 
@@ -351,18 +491,29 @@ function enableDarkTheme(){
 
 
 /*==========================================================
-                LIGHT THEME
+                    LIGHT THEME
 ==========================================================*/
 
-function enableLightTheme(){
+function enableLightTheme() {
 
-    document.body.classList.remove("dark-theme");
+    document.body.classList.remove(
+        "dark-theme"
+    );
 
-    localStorage.setItem("theme","light");
 
-    const button = document.getElementById("themeBtn");
+    localStorage.setItem(
+        "theme",
+        "light"
+    );
 
-    if(button){
+
+    const button =
+        document.getElementById(
+            "themeBtn"
+        );
+
+
+    if (button) {
 
         button.innerHTML = "🌙";
 
@@ -371,154 +522,37 @@ function enableLightTheme(){
 }
 
 
-
-/*==========================================================
-            STEP 24 - LANGUAGE TOGGLE
-==========================================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    initializeLanguage();
-
-});
-
-
-/*==========================================================
-            INITIALIZE LANGUAGE
-==========================================================*/
-
-function initializeLanguage(){
-
-    const languageButton = document.getElementById("languageBtn");
-
-    if(!languageButton){
-
-        return;
-
-    }
-
-    /*==========================================
-            LOAD SAVED LANGUAGE
-    ==========================================*/
-
-    const savedLanguage = localStorage.getItem("language") || "en";
-
-    updateLanguageButton(savedLanguage);
-
-    /*==========================================
-            BUTTON CLICK
-    ==========================================*/
-
-    languageButton.addEventListener("click", () => {
-
-        let currentLanguage = localStorage.getItem("language") || "en";
-
-        if(currentLanguage === "en"){
-
-            currentLanguage = "hi";
-
-        }
-
-        else{
-
-            currentLanguage = "en";
-
-        }
-
-        localStorage.setItem("language", currentLanguage);
-
-        updateLanguageButton(currentLanguage);
-
-        /*======================================
-            PLACEHOLDER
-            language.js will handle translation
-        ======================================*/
-
-        document.dispatchEvent(
-
-            new CustomEvent("languageChanged",{
-
-                detail:{
-
-                    language:currentLanguage
-
-                }
-
-            })
-
-        );
-
-    });
-
-}
-
-
-/*==========================================================
-            UPDATE LANGUAGE BUTTON
-==========================================================*/
-
-function updateLanguageButton(language){
-
-    const languageButton = document.getElementById("languageBtn");
-
-    if(!languageButton){
-
-        return;
-
-    }
-
-    if(language === "hi"){
-
-        languageButton.innerHTML = "English";
-
-    }
-
-    else{
-
-        languageButton.innerHTML = "हिन्दी";
-
-    }
-
-}
-
-
-
-/*==========================================================
-            STEP 25 - HERO ANIMATIONS & PAGE LOADER
-==========================================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    initializeLoader();
-
-    initializeScrollAnimations();
-
-});
-
-
 /*==========================================================
                     PAGE LOADER
 ==========================================================*/
 
-function initializeLoader(){
+function initializeLoader() {
 
-    const loader = document.getElementById("pageLoader");
+    const loader =
+        document.getElementById(
+            "pageLoader"
+        );
 
-    if(!loader){
 
+    if (!loader) {
         return;
-
     }
 
-    window.addEventListener("load", () => {
 
-        setTimeout(() => {
+    window.addEventListener(
+        "load",
+        () => {
 
-            loader.classList.add("hide");
+            setTimeout(() => {
 
-        },600);
+                loader.classList.add(
+                    "hide"
+                );
 
-    });
+            }, 600);
+
+        }
+    );
 
 }
 
@@ -527,361 +561,258 @@ function initializeLoader(){
                 SCROLL ANIMATIONS
 ==========================================================*/
 
-function initializeScrollAnimations(){
+function initializeScrollAnimations() {
 
-    const animatedElements = document.querySelectorAll(
+    /*
+        IntersectionObserver is supported by
+        modern browsers. If unavailable,
+        simply skip the animation.
+    */
 
-        ".hero-content," +
-
-        ".hero-image," +
-
-        ".feature-card," +
-
-        ".preview-card," +
-
-        ".step-card," +
-
-        ".accordion-item," +
-
-        ".footer-box"
-
-    );
-
-    if(animatedElements.length === 0){
+    if (
+        !("IntersectionObserver" in window)
+    ) {
 
         return;
 
     }
 
-    const observer = new IntersectionObserver(
 
-        (entries) => {
+    const animatedElements =
+        document.querySelectorAll(
 
-            entries.forEach(entry => {
+            ".hero-content," +
 
-                if(entry.isIntersecting){
+            ".hero-image," +
 
-                    entry.target.classList.add("fade-up");
+            ".feature-card," +
 
-                    observer.unobserve(entry.target);
+            ".preview-card," +
+
+            ".step-card," +
+
+            ".accordion-item," +
+
+            ".footer-box"
+
+        );
+
+
+    if (
+        animatedElements.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const observer =
+        new IntersectionObserver(
+
+            (entries, observer) => {
+
+                entries.forEach(entry => {
+
+                    if (
+                        entry.isIntersecting
+                    ) {
+
+                        entry.target.classList.add(
+                            "fade-up"
+                        );
+
+
+                        observer.unobserve(
+                            entry.target
+                        );
+
+                    }
+
+                });
+
+            },
+
+            {
+                threshold: 0.15
+            }
+
+        );
+
+
+    animatedElements.forEach(
+        element => {
+
+            observer.observe(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+/*==========================================================
+                HERO IMAGE PARALLAX
+==========================================================*/
+
+function initializeHeroParallax() {
+
+    const heroImage =
+        document.querySelector(
+            ".hero-image img"
+        );
+
+
+    if (!heroImage) {
+        return;
+    }
+
+
+    /*
+        Respect reduced-motion preference.
+    */
+
+    const prefersReducedMotion =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+
+    if (prefersReducedMotion) {
+        return;
+    }
+
+
+    /*
+        Use requestAnimationFrame to avoid
+        updating the image excessively during
+        scrolling.
+    */
+
+    let ticking = false;
+
+
+    function updateParallax() {
+
+        if (!ticking) {
+
+            window.requestAnimationFrame(
+                () => {
+
+                    const scrollValue =
+                        window.scrollY;
+
+
+                    heroImage.style.transform =
+                        `translateY(${scrollValue * 0.08}px)`;
+
+
+                    ticking = false;
 
                 }
+            );
 
-            });
 
-        },
-
-        {
-
-            threshold:0.15
+            ticking = true;
 
         }
 
-    );
-
-    animatedElements.forEach(element => {
-
-        observer.observe(element);
-
-    });
-
-}
-
-
-/*==========================================================
-                HERO BUTTON EFFECT
-==========================================================*/
-
-const createButton = document.getElementById("createBiodataBtn");
-
-if(createButton){
-
-    createButton.addEventListener("mouseenter", () => {
-
-        createButton.style.transform = "translateY(-4px) scale(1.02)";
-
-    });
-
-    createButton.addEventListener("mouseleave", () => {
-
-        createButton.style.transform = "";
-
-    });
-
-}
-
-
-/*==========================================================
-            HERO IMAGE PARALLAX EFFECT
-==========================================================*/
-
-const heroImage = document.querySelector(".hero-image img");
-
-window.addEventListener("scroll", () => {
-
-    if(!heroImage){
-
-        return;
-
     }
 
-    const scrollValue = window.scrollY;
 
-    heroImage.style.transform =
-
-        `translateY(${scrollValue * 0.08}px)`;
-
-});
-
-
-
-
-
-/*==========================================================
-            STEP 26 - FINAL APPLICATION INITIALIZATION
-==========================================================*/
-
-/**
- * ---------------------------------------------------------
- * Application Information
- * ---------------------------------------------------------
- */
-
-const APP = {
-
-    name: "Kalwar Vaivahiki",
-
-    version: "1.0.0",
-
-    author: "Kalwar Vaivahiki",
-
-    environment: "Production"
-
-};
-
-
-/*==========================================================
-                APPLICATION START
-==========================================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    initializeApplication();
-
-});
-
-
-/*==========================================================
-            MAIN APPLICATION INITIALIZER
-==========================================================*/
-
-function initializeApplication(){
-
-    consoleBanner();
-
-    console.log("Application Initialized Successfully.");
-
-}
-
-
-/*==========================================================
-                CONSOLE BANNER
-==========================================================*/
-
-function consoleBanner(){
-
-    console.clear();
-
-    console.log(
-`
-==========================================================
-            KALWAR VAIVAHIKI
-        Matrimonial Biodata Generator
-==========================================================
-
-Version      : ${APP.version}
-Environment  : ${APP.environment}
-
-Application Loaded Successfully.
-
-==========================================================
-`
+    window.addEventListener(
+        "scroll",
+        updateParallax,
+        { passive: true }
     );
 
 }
 
 
-/*==========================================================
-                UTILITY FUNCTIONS
-==========================================================*/
-
-/**
- * Get element by ID
- */
-
-function getElement(id){
-
-    return document.getElementById(id);
-
-}
-
-
-/**
- * Query Selector
- */
-
-function query(selector){
-
-    return document.querySelector(selector);
-
-}
-
-
-/**
- * Query Selector All
- */
-
-function queryAll(selector){
-
-    return document.querySelectorAll(selector);
-
-}
-
-
-/**
- * Show Element
- */
-
-function show(element){
-
-    if(element){
-
-        element.style.display = "";
-
-    }
-
-}
-
-
-/**
- * Hide Element
- */
-
-function hide(element){
-
-    if(element){
-
-        element.style.display = "none";
-
-    }
-
-}
-
-
-/**
- * Toggle Element
- */
-
-function toggle(element){
-
-    if(!element){
-
-        return;
-
-    }
-
-    if(element.style.display === "none"){
-
-        show(element);
-
-    }
-
-    else{
-
-        hide(element);
-
-    }
-
-}
-
-
-/**
- * Scroll To Element
- */
-
-function scrollToElement(id){
-
-    const element = getElement(id);
-
-    if(!element){
-
-        return;
-
-    }
-
-    element.scrollIntoView({
-
-        behavior:"smooth",
-
-        block:"start"
-
-    });
-
-}
-
-
-/**
- * Generate Unique ID
- */
-
-function generateId(){
-
-    return Date.now().toString(36) +
-
-        Math.random().toString(36).substring(2,8);
-
-}
-
-
-/**
- * Show Success Message
- */
-
-function appShowSuccess(message){
-
-    console.log("SUCCESS:", message);
-
-}
-
-
-/**
- * Show Error Message
- */
-
-function appShowError(message){
-
-    console.error("ERROR:", message);
-
-}
-
 
 /*==========================================================
-                GLOBAL ERROR HANDLER
+                SUPPORT / DONATION
 ==========================================================*/
 
-window.addEventListener("error",(event)=>{
+function initializeSupportSection() {
 
-    console.error(
+    const copyButton =
+        document.getElementById("copyUpiBtn");
 
-        "Application Error:",
+    const donateButton =
+        document.getElementById("donateUpiBtn");
 
-        event.message
-
-    );
-
-});
+    const upiIdElement =
+        document.getElementById("upiId");
 
 
-/*==========================================================
-                END OF APP.JS
-==========================================================*/
+    /* COPY UPI ID */
+
+    if (copyButton && upiIdElement) {
+
+        copyButton.addEventListener(
+            "click",
+            async () => {
+
+                const upiId =
+                    upiIdElement.textContent.trim();
+
+                try {
+
+                    await navigator.clipboard.writeText(
+                        upiId
+                    );
+
+                    const originalText =
+                        copyButton.innerHTML;
+
+                    copyButton.innerHTML =
+                        '<i class="fa-solid fa-check"></i> Copied!';
+
+                    setTimeout(() => {
+
+                        copyButton.innerHTML =
+                            originalText;
+
+                    }, 2000);
+
+                }
+                catch (error) {
+
+                    alert(
+                        "Unable to copy UPI ID. Please copy it manually."
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* DONATE VIA UPI */
+
+    if (donateButton && upiIdElement) {
+
+        donateButton.addEventListener(
+            "click",
+            () => {
+
+                const upiId =
+                    upiIdElement.textContent.trim();
+
+                const upiUrl =
+                    `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent("Jaiswal Vaivaahiki")}&cu=INR`;
+
+                window.location.href =
+                    upiUrl;
+
+            }
+        );
+
+    }
+
+}
