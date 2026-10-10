@@ -423,6 +423,12 @@ async function generatePDF(){
    RETRYABLE PAID PDF DOWNLOAD
 ========================================== */
 
+
+/* ==========================================
+   AUTOMATIC PAID PDF DOWNLOAD
+   NO MANUAL CONFIRMATION
+========================================== */
+
 async function downloadPDF() {
 
     if (window.paidDownloadBusy) {
@@ -433,61 +439,52 @@ async function downloadPDF() {
 
     try {
 
-        const pending =
-            typeof window.getPendingPayment === "function"
-                ? window.getPendingPayment()
-                : null;
+        const pending = window.getPendingPayment?.();
 
         const token =
             pending?.token ||
             localStorage.getItem("downloadToken");
 
         if (!token) {
-
             alert(
-                "No verified download found. " +
-                "Click Download PDF to recover your payment."
+                "Payment verification is required. " +
+                "Please click Download PDF again."
             );
-
             return;
-
         }
 
-        // Verify that the payment still has
-        // an unused download credit.
+        // If a download was already initiated,
+        // finalize that attempt instead of downloading again.
 
-        const status = await window.paymentPost(
+        if (pending?.downloadInitiated) {
+
+            await finalizePaidDownload(token);
+
+            return;
+        }
+
+        // Confirm this payment has an unused credit.
+
+        const verification = await window.paymentPost(
             "verify-download",
-            {
-                token: token
-            }
+            { token }
         );
 
-        if (!status.success) {
-
-            alert(
-                "Download unavailable right now. " +
-                "Please retry without paying again."
-            );
-
+        if (!verification.success) {
+            alert("Download credit is not available.");
             return;
-
         }
 
-        // Generate the PDF using your existing function.
+        // Generate PDF before consuming payment credit.
 
         const pdf = await generatePDF();
 
         if (!pdf) {
-
             alert(
-                "PDF generation failed.\n\n" +
-                "Your paid download is still available. " +
-                "Please click Download PDF again."
+                "PDF generation failed. " +
+                "Your payment is safe. Please retry."
             );
-
             return;
-
         }
 
         const fullName = (
@@ -503,75 +500,34 @@ async function downloadPDF() {
             fullName + "_" + education + ".pdf"
         ).replace(/[\\/:*?"<>|]/g, "_");
 
-        // Request the browser to save the PDF.
+        // Ask browser to save the PDF.
+        // If this call throws, the credit remains unused.
 
         pdf.save(fileName);
 
-        // Browser JavaScript cannot reliably confirm
-        // that the file was physically saved.
+        // Record that browser download was initiated.
 
-        const downloaded = window.confirm(
+        if (pending) {
 
-            "Did your PDF finish downloading successfully?\n\n" +
+            pending.downloadInitiated = true;
 
-            "OK = Yes, I have downloaded the PDF.\n\n" +
-
-            "Cancel = No, download failed. Keep my paid download."
-
-        );
-
-        if (!downloaded) {
-
-            alert(
-                "Your paid download is still available.\n\n" +
-                "Click Download PDF again to retry " +
-                "without making another payment."
-            );
-
-            return;
+            window.savePendingPayment(pending);
 
         }
 
-        // Mark used only after customer confirmation.
+        // Automatically consume the credit.
+        // No confirmation popup.
 
-        const result = await window.paymentPost(
-            "mark-used",
-            {
-                token: token
-            }
-        );
-
-        if (result.success) {
-
-            if (
-                typeof window.clearPendingPayment === "function"
-            ) {
-
-                window.clearPendingPayment();
-
-            }
-
-            try {
-                localStorage.removeItem("downloadToken");
-            } catch (_) {}
-
-            alert(
-                "Your PDF download has been confirmed. Thank you!"
-            );
-
-        }
+        await finalizePaidDownload(token);
 
     } catch (error) {
 
-        console.error(
-            "PDF Download Error:",
-            error
-        );
+        console.error("PDF Download Error:", error);
 
         alert(
-            "The PDF download or confirmation failed.\n\n" +
-            "Your payment record has been kept.\n" +
-            "Click Download PDF again to retry.\n\n" +
+            "PDF download or payment finalization failed.\n" +
+            "Please retry. If the browser already started " +
+            "the download, check your Downloads folder.\n\n" +
             error.message
         );
 
@@ -580,6 +536,38 @@ async function downloadPDF() {
         window.paidDownloadBusy = false;
 
     }
+
+}
+
+
+/* ==========================================
+   FINALIZE SUCCESSFUL DOWNLOAD ATTEMPT
+========================================== */
+
+async function finalizePaidDownload(token) {
+
+    const result = await window.paymentPost(
+        "mark-used",
+        { token }
+    );
+
+    if (!result.success) {
+        throw new Error(
+            "Could not finalize the download credit."
+        );
+    }
+
+    // Remove payment recovery data after completion.
+
+    window.clearPendingPayment?.();
+
+    localStorage.removeItem("downloadToken");
+
+    // The next biodata will require a new payment.
+
+    console.log(
+        "PDF download initiated. Payment credit consumed."
+    );
 
 }
 
