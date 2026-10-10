@@ -284,44 +284,6 @@ function showWhatsAppChoicePopup(event) {
         <div class="whatsapp-choice-options">
 
 
-            <!-- NORMAL WHATSAPP -->
-
-            <button
-                type="button"
-                class="whatsapp-option-card"
-                id="normalWhatsappBtn">
-
-
-                <div class="whatsapp-option-icon">
-
-                    <i class="fa-brands fa-whatsapp"></i>
-
-                </div>
-
-
-                <div class="whatsapp-option-content">
-
-                    <div class="whatsapp-option-title">
-                        ${text.whatsapp}
-                    </div>
-
-                    <div class="whatsapp-option-description">
-                        ${text.whatsappDescription}
-                    </div>
-
-                </div>
-
-
-                <div class="whatsapp-option-arrow">
-
-                    <i class="fa-solid fa-chevron-right"></i>
-
-                </div>
-
-
-            </button>
-
-
             <!-- WHATSAPP BUSINESS -->
 
             <button
@@ -806,13 +768,16 @@ function initializeWhatsAppButton() {
                 "true";
 
 
-            /*
-             * Show popup on click.
-             */
-            button.addEventListener(
-                "click",
-                showWhatsAppChoicePopup
-            );
+
+            button.addEventListener("click", function(event) {
+
+                event.preventDefault();
+
+                openBusinessWhatsApp(
+                    getWhatsAppMessage()
+                );
+
+            });
 
 
         }
@@ -839,8 +804,17 @@ document.addEventListener(
                 GLOBAL EXPORTS
 ==========================================================*/
 
-window.sendBiodataOnWhatsApp =
-    showWhatsAppChoicePopup;
+window.sendBiodataOnWhatsApp = function(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    openBusinessWhatsApp(
+        getWhatsAppMessage()
+    );
+
+};
 
 
 window.initializeWhatsAppButton =

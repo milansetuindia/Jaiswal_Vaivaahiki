@@ -1258,6 +1258,85 @@ const TRANSLATIONS = {
 };
 
 
+
+/* ==========================================================
+   ADDITIONAL HINDI FORM TRANSLATIONS
+========================================================== */
+
+Object.assign(TRANSLATIONS.hi, {
+
+    // Personal Details
+    "Enter your full name": "अपना पूरा नाम दर्ज करें",
+    "Hour": "घंटा",
+    "Minute": "मिनट",
+    "AM / PM": "सुबह / शाम",
+    "Enter place of birth": "जन्म स्थान दर्ज करें",
+    "Enter Rashi": "राशि दर्ज करें",
+    "Select Gan": "गण चुनें",
+    "Dev": "देव",
+    "Manushya": "मनुष्य",
+    "Rakshas": "राक्षस",
+    "Enter complexion": "रंग दर्ज करें",
+    "Select Status": "वैवाहिक स्थिति चुनें",
+    "Unmarried": "अविवाहित",
+    "Divorced": "तलाकशुदा",
+    "Widowed": "विधवा / विधुर",
+    "Select Caste": "जाति चुनें",
+    "Kalar": "कलार",
+    "Kalwar": "कलवार",
+    "Kalal": "कलाल",
+    "Enter religion": "धर्म दर्ज करें",
+    "Enter gotra": "गोत्र दर्ज करें",
+    "Enter sub caste": "उपजाति दर्ज करें",
+    "Yes": "हाँ",
+    "No": "नहीं",
+    "Aanshik": "आंशिक",
+    "Enter language": "भाषा दर्ज करें",
+    "Select Diet": "खान-पान चुनें",
+    "Vegetarian": "शाकाहारी",
+    "Non-Vegetarian": "मांसाहारी",
+    "Enter hobbies": "शौक दर्ज करें",
+    "Enter other details": "अन्य विवरण दर्ज करें",
+    "Enter siblings details": "भाई-बहनों का विवरण दर्ज करें",
+
+    // Education
+    "Enter highest education": "उच्चतम शिक्षा दर्ज करें",
+    "Enter college / university": "कॉलेज / विश्वविद्यालय दर्ज करें",
+    "Enter 12th board": "12वीं बोर्ड दर्ज करें",
+    "Enter 10th board": "10वीं बोर्ड दर्ज करें",
+    "Enter special skill": "विशेष कौशल दर्ज करें",
+
+    // Work
+    "Enter profession": "व्यवसाय दर्ज करें",
+    "Enter designation": "पद दर्ज करें",
+    "Enter organization": "संस्था का नाम दर्ज करें",
+    "Enter work place": "कार्यस्थल दर्ज करें",
+    "Enter income": "आय दर्ज करें",
+
+    // Family
+    "Enter father's name": "पिता का नाम दर्ज करें",
+    "Enter father's occupation": "पिता का व्यवसाय दर्ज करें",
+    "Enter mother's name": "माता का नाम दर्ज करें",
+    "Enter mother's occupation": "माता का व्यवसाय दर्ज करें",
+
+    // Partner Preference
+    "Enter preferred qualification": "वांछित योग्यता दर्ज करें",
+    "Enter preferred profession": "वांछित व्यवसाय दर्ज करें",
+    "Enter preferred location": "वांछित स्थान दर्ज करें",
+    "Enter preferred caste": "वांछित जाति दर्ज करें",
+    "Enter other expectations": "अन्य अपेक्षाएँ दर्ज करें",
+
+    // Contact and Address
+    "Enter current address": "वर्तमान पता दर्ज करें",
+    "Enter permanent address": "स्थायी पता दर्ज करें",
+
+    // Declaration
+    "Enter sender's name": "भेजने वाले का नाम दर्ज करें"
+
+});
+
+
+
 /*==========================================================
                 WEBSITE LANGUAGE FUNCTIONS
 ==========================================================*/
@@ -1424,14 +1503,11 @@ function translateTextNodes(root = document.body) {
 /*==========================================================
                 TRANSLATE PLACEHOLDERS
 ==========================================================*/
+
+
 function translatePlaceholders() {
 
-    const language =
-        getCurrentLanguage();
-
-    const dictionary =
-        TRANSLATIONS[language] ||
-        TRANSLATIONS.en;
+    const language = getCurrentLanguage();
 
     document
         .querySelectorAll(
@@ -1439,12 +1515,7 @@ function translatePlaceholders() {
         )
         .forEach(element => {
 
-            /*
-             * Store the original English placeholder
-             * only once.
-             */
             if (!element.dataset.originalPlaceholder) {
-
                 element.dataset.originalPlaceholder =
                     element.getAttribute("placeholder") || "";
             }
@@ -1454,16 +1525,12 @@ function translatePlaceholders() {
                     element.dataset.originalPlaceholder
                 );
 
-            if (
-                dictionary[original] !== undefined
-            ) {
-
-                element.setAttribute(
-                    "placeholder",
-                    dictionary[original]
-                );
-
-            }
+            element.setAttribute(
+                "placeholder",
+                language === "hi"
+                    ? (TRANSLATIONS.hi[original] ?? original)
+                    : original
+            );
 
         });
 
@@ -1474,42 +1541,34 @@ function translatePlaceholders() {
                 TRANSLATE SELECT OPTIONS
 ==========================================================*/
 
+
+/*==========================================================
+        TRANSLATE SELECT OPTIONS
+        ENGLISH ↔ HINDI
+==========================================================*/
 function translateSelectOptions() {
 
-    const language =
-        getCurrentLanguage();
+    const language = getCurrentLanguage();
 
-    const dictionary =
-        TRANSLATIONS[language] ||
-        TRANSLATIONS.en;
-
-    document
-        .querySelectorAll("select option")
+    document.querySelectorAll("select option")
         .forEach(option => {
 
-            /*
-             * Store the original English option text
-             * only once.
-             */
-            if (!option.dataset.originalText) {
-
+            if (!option.hasAttribute("data-original-text")) {
                 option.dataset.originalText =
-                    option.textContent;
+                    option.textContent.trim();
             }
 
-            const original =
-                normalizeTranslationText(
-                    option.dataset.originalText
-                );
+            const english = option.dataset.originalText;
 
-            if (
-                dictionary[original] !== undefined
-            ) {
-
-                option.textContent =
-                    dictionary[original];
-
+            // Fix the value before translating the text.
+            // Explicit existing values remain unchanged.
+            if (!option.hasAttribute("value")) {
+                option.value = english;
             }
+
+            option.textContent = language === "hi"
+                ? (TRANSLATIONS.hi[english] ?? english)
+                : english;
 
         });
 
@@ -1521,65 +1580,60 @@ function translateSelectOptions() {
 
 function initializeLanguageButton() {
 
-    const button =
-        document.getElementById(
-            "languageBtn"
+    const buttons = [
+        document.getElementById("languageBtn"),
+        document.getElementById("heroLanguageBtn")
+    ];
+
+    buttons.forEach(button => {
+
+        if (!button) return;
+
+        button.addEventListener(
+            "click",
+            toggleWebsiteLanguage
         );
 
-    if (!button) {
-        return;
-    }
-
+    });
 
     updateLanguageButton();
-
-
-    button.addEventListener(
-        "click",
-        toggleWebsiteLanguage
-    );
-
 }
 
 
 function updateLanguageButton() {
 
-    const button =
-        document.getElementById(
-            "languageBtn"
-        );
+    const buttons = [
+        document.getElementById("languageBtn"),
+        document.getElementById("heroLanguageBtn")
+    ];
 
-    if (!button) {
-        return;
-    }
+    const language = getCurrentLanguage();
 
+    buttons.forEach(button => {
 
-    const language =
-        getCurrentLanguage();
+        if (!button) return;
 
+        if (language === "en") {
 
-    if (language === "en") {
+            button.textContent = "हिन्दी";
 
-        button.innerHTML =
-            "हिन्दी";
+            button.setAttribute(
+                "aria-label",
+                "Switch website language to Hindi"
+            );
 
-        button.setAttribute(
-            "aria-label",
-            "Switch website language to Hindi"
-        );
+        } else {
 
-    }
-    else {
+            button.textContent = "English";
 
-        button.innerHTML =
-            "English";
+            button.setAttribute(
+                "aria-label",
+                "Switch website language to English"
+            );
 
-        button.setAttribute(
-            "aria-label",
-            "Switch website language to English"
-        );
+        }
 
-    }
+    });
 
 }
 

@@ -423,10 +423,11 @@
                             </button>
 
                             <button
-                                    class="btn btn-outline-light"
-                                    id="learnMoreBtn">
+                                type="button"
+                                class="btn btn-outline-light language-btn"
+                                id="heroLanguageBtn">
 
-                                Learn More
+                                हिन्दी
 
                             </button>
 
@@ -947,7 +948,7 @@
             <div class="text-center">
 
                 <img
-                    src="assets/sample-biodata.png"
+                    src="assets/sample-biodata.jpeg"
                     alt="Sample Biodata Template"
                     class="img-fluid shadow rounded preview-template">
 
@@ -2027,7 +2028,7 @@
                                         Select Status
                                     </option>
 
-                                    <option>Never Married</option>
+                                    <option>Unmarried</option>
 
                                     <option>Divorced</option>
 
@@ -2045,16 +2046,27 @@
                                     Caste
                                 </label>
 
-                                <input
-                                    type="text"
+                                <select
                                     id="caste"
-                                    maxlength="20"
-                                    class="form-control"
-                                    placeholder="Enter caste">
+                                    class="form-select">
 
-                                <small id="casteCounter" class="text-muted">
-                                    20 characters remaining
-                                </small>
+                                    <option value="">
+                                        Select Caste
+                                    </option>
+
+                                    <option value="Kalar">
+                                        Kalar
+                                    </option>
+
+                                    <option value="Kalwar">
+                                        Kalwar
+                                    </option>
+
+                                    <option value="Kalal">
+                                        Kalal
+                                    </option>
+
+                                </select>
 
                             </div>
 
@@ -2798,7 +2810,7 @@
                                     maxlength="40"
                                     class="form-control"
                                     rows="3"
-                                    placeholder="e.g. 2 Brothers&#10;1 Sister (Married)"></textarea>
+                                    placeholder="Enter siblings details"></textarea>
 
                                 <small
                                     id="siblingsDetailsCounter"

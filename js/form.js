@@ -107,6 +107,7 @@ function initializeForm(){
 ============================================================
 */
 
+
 function showStep(step){
 
     const steps = document.querySelectorAll(".form-step");
@@ -114,28 +115,49 @@ function showStep(step){
     steps.forEach((section) => {
 
         section.classList.add("d-none");
-
         section.classList.remove("active-step");
 
     });
 
     const currentSection = document.querySelector(
-
         `.form-step[data-step="${step}"]`
-
     );
 
     if(currentSection){
 
         currentSection.classList.remove("d-none");
-
         currentSection.classList.add("active-step");
 
     }
 
     updateProgressBar();
-
     updateNavigationButtons();
+
+    // Scroll to the beginning of the form
+    const formSection = document.getElementById(
+        "biodataFormSection"
+    );
+
+    if (
+        formSection &&
+        !formSection.classList.contains("d-none")
+    ) {
+
+        const navbarHeight =
+            document.querySelector(".custom-navbar")?.offsetHeight || 90;
+
+        const topPosition =
+            formSection.getBoundingClientRect().top +
+            window.scrollY -
+            navbarHeight -
+            10;
+
+        window.scrollTo({
+            top: Math.max(0, topPosition),
+            behavior: "smooth"
+        });
+
+    }
 
 }
 
@@ -769,6 +791,36 @@ function populateReview(){
 
 
 
+/* ==========================================================
+        TRANSLATE REVIEW DROPDOWN VALUES
+========================================================== */
+
+function formatReviewValue(key, value) {
+
+    if (value === null || value === undefined || value === "") {
+        return "-";
+    }
+
+    const translatedFields = [
+        "gan",
+        "maritalStatus",
+        "caste",
+        "manglik",
+        "diet"
+    ];
+
+    if (
+        getCurrentLanguage() === "hi" &&
+        translatedFields.includes(key)
+    ) {
+
+        return TRANSLATIONS.hi[String(value)] ?? value;
+
+    }
+
+    return value;
+}
+
 
 /*
 ============================================================
@@ -808,7 +860,7 @@ function fillReviewSection(
 
                 :
 
-                ${data[key] || "-"}
+                ${formatReviewValue(key, data[key])}
 
             </div>
 

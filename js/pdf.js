@@ -112,21 +112,18 @@ function initializePDFModule(){
                 BUTTONS
 ==========================================================*/
 
-function initializeDownloadButton(){
+
+function initializeDownloadButton() {
 
     const button = document.getElementById(
-
         "downloadPdfBtn"
-
     );
 
-    if(!button){
-
+    if (!button) {
         return;
-
     }
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", function() {
 
         if (typeof window.startPayment === "function") {
 
@@ -135,6 +132,10 @@ function initializeDownloadButton(){
         } else {
 
             console.error("startPayment not found");
+
+            alert(
+                "Payment system is not ready. Please refresh."
+            );
 
         }
 
@@ -418,87 +419,165 @@ async function generatePDF(){
 ==========================================================*/
 
 
+/* ==========================================
+   RETRYABLE PAID PDF DOWNLOAD
+========================================== */
 
 async function downloadPDF() {
 
+    if (window.paidDownloadBusy) {
+        return;
+    }
+
+    window.paidDownloadBusy = true;
+
     try {
 
-        // Check payment first
-        const paymentResponse = await fetch(
-            window.API_URL + "/api/payment/verify-download",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    token: localStorage.getItem("downloadToken")
-                })
-            }
-        );
+        const pending =
+            typeof window.getPendingPayment === "function"
+                ? window.getPendingPayment()
+                : null;
 
-        const paymentData = await paymentResponse.json();
+        const token =
+            pending?.token ||
+            localStorage.getItem("downloadToken");
 
-        if (!paymentData.success) {
+        if (!token) {
 
-            alert("Please complete payment first.");
+            alert(
+                "No verified download found. " +
+                "Click Download PDF to recover your payment."
+            );
 
             return;
 
         }
 
-        // Generate PDF
+        // Verify that the payment still has
+        // an unused download credit.
+
+        const status = await window.paymentPost(
+            "verify-download",
+            {
+                token: token
+            }
+        );
+
+        if (!status.success) {
+
+            alert(
+                "Download unavailable right now. " +
+                "Please retry without paying again."
+            );
+
+            return;
+
+        }
+
+        // Generate the PDF using your existing function.
+
         const pdf = await generatePDF();
 
         if (!pdf) {
 
+            alert(
+                "PDF generation failed.\n\n" +
+                "Your paid download is still available. " +
+                "Please click Download PDF again."
+            );
+
             return;
 
         }
 
-        const fullName =
-            (biodata.personal.fullName || "Unknown").trim();
+        const fullName = (
+            biodata.personal.fullName || "Unknown"
+        ).trim();
 
-        const education =
-            (biodata.education.highestQualification || "Education").trim();
+        const education = (
+            biodata.education.highestQualification ||
+            "Education"
+        ).trim();
 
-        const fileName =
-            `${fullName}_${education}.pdf`
-                .replace(/[\\/:*?"<>|]/g, "_");
+        const fileName = (
+            fullName + "_" + education + ".pdf"
+        ).replace(/[\\/:*?"<>|]/g, "_");
+
+        // Request the browser to save the PDF.
 
         pdf.save(fileName);
 
-        // Mark token as used AFTER successful download
+        // Browser JavaScript cannot reliably confirm
+        // that the file was physically saved.
 
-        const markResponse = await fetch(
-            window.API_URL + "/api/payment/mark-used",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    token: localStorage.getItem("downloadToken")
-                })
-            }
+        const downloaded = window.confirm(
+
+            "Did your PDF finish downloading successfully?\n\n" +
+
+            "OK = Yes, I have downloaded the PDF.\n\n" +
+
+            "Cancel = No, download failed. Keep my paid download."
+
         );
 
-        const markData = await markResponse.json();
+        if (!downloaded) {
 
-        if (!markData.success) {
+            alert(
+                "Your paid download is still available.\n\n" +
+                "Click Download PDF again to retry " +
+                "without making another payment."
+            );
 
-            console.error("Unable to mark token as used.");
+            return;
 
         }
 
-        localStorage.removeItem("downloadToken");
+        // Mark used only after customer confirmation.
 
-    }
-    catch (error) {
+        const result = await window.paymentPost(
+            "mark-used",
+            {
+                token: token
+            }
+        );
 
-        console.error(error);
+        if (result.success) {
 
-        alert("Unable to download PDF.");
+            if (
+                typeof window.clearPendingPayment === "function"
+            ) {
+
+                window.clearPendingPayment();
+
+            }
+
+            try {
+                localStorage.removeItem("downloadToken");
+            } catch (_) {}
+
+            alert(
+                "Your PDF download has been confirmed. Thank you!"
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "PDF Download Error:",
+            error
+        );
+
+        alert(
+            "The PDF download or confirmation failed.\n\n" +
+            "Your payment record has been kept.\n" +
+            "Click Download PDF again to retry.\n\n" +
+            error.message
+        );
+
+    } finally {
+
+        window.paidDownloadBusy = false;
 
     }
 
