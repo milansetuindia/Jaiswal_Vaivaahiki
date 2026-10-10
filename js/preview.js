@@ -1,3 +1,77 @@
+/* =========================================
+   PDF DROPDOWN VALUE TRANSLATIONS
+========================================= */
+
+function formatPDFValue(field, value) {
+
+    if (value === null || value === undefined || value === "") {
+        return "";
+    }
+
+    const translations = {
+
+        gan: {
+            "Dev": "देव",
+            "Manushya": "मनुष्य",
+            "Rakshas": "राक्षस"
+        },
+
+        maritalStatus: {
+            "Unmarried": "अविवाहित",
+            "Divorced": "तलाकशुदा",
+            "Widowed": "विधवा / विधुर"
+        },
+
+        caste: {
+            "Kalar": "कलार",
+            "Kalwar": "कलवार",
+            "Kalal": "कलाल"
+        },
+
+        manglik: {
+            "Yes": "हाँ",
+            "No": "नहीं",
+            "Aanshik": "आंशिक"
+        },
+
+        diet: {
+            "Vegetarian": "शाकाहारी",
+            "Non-Vegetarian": "मांसाहारी"
+        }
+
+    };
+
+    // Partner caste uses the same translations
+    const translationField =
+        field === "preferredCaste" ? "caste" : field;
+
+    const options = translations[translationField];
+
+    if (!options) {
+        return value;
+    }
+
+    const text = String(value).trim();
+
+    // Support previously saved Hindi values too
+    const english =
+        Object.keys(options).find(
+            key => key === text || options[key] === text
+        ) || text;
+
+    const selectedTemplate = biodata.template || "template1";
+
+    const hindiPDF =
+        selectedTemplate === "template5" ||
+        selectedTemplate === "template6" ||
+        selectedTemplate === "template7";
+
+    return hindiPDF
+        ? (options[english] || value)
+        : english;
+}
+
+
 function formatDOB(dateString) {
     if (!dateString) {
         return "";
@@ -82,7 +156,7 @@ function renderPreviewContainer() {
         biodata.personal.rashi || "";
 
     document.getElementById("previewGan").textContent =
-        biodata.personal.gan || "";
+        formatPDFValue("gan", biodata.personal.gan);
 
     document.getElementById("previewHeight").textContent =
         biodata.personal.height || "";
@@ -91,19 +165,19 @@ function renderPreviewContainer() {
         biodata.personal.complexion || "";
 
     document.getElementById("previewMaritalStatus").textContent =
-        biodata.personal.maritalStatus || "";
+        formatPDFValue("maritalStatus", biodata.personal.maritalStatus);
 
     document.getElementById("previewCaste").textContent =
-        biodata.personal.caste || "";
+        formatPDFValue("caste", biodata.personal.caste);
 
     document.getElementById("previewManglik").textContent =
-        biodata.personal.manglik || "";
+        formatPDFValue("manglik", biodata.personal.manglik);
 
     document.getElementById("previewLanguage").textContent =
         biodata.personal.language || "";
 
     document.getElementById("previewDiet").textContent =
-        biodata.personal.diet || "";
+        formatPDFValue("diet", biodata.personal.diet);
 
     document.getElementById("previewHobbies").textContent =
         biodata.personal.hobbies || "";

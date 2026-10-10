@@ -145,48 +145,39 @@ function storageLog(
 ============================================================
 */
 
-function saveBiodata(){
 
-    try{
+function saveBiodata() {
 
-        const biodataJson = JSON.stringify(
+    try {
 
-            biodata
+        const biodataJson = JSON.stringify(biodata);
 
-        );
-
-        setStorage(
-
+        const saved = setStorage(
             STORAGE.storageKey,
-
             biodataJson
-
         );
+
+        if (!saved) {
+            console.error(
+                "Biodata was NOT saved. Browser storage may be full."
+            );
+            return false;
+        }
 
         storageLog(
-
-            "Biodata Saved Successfully",
-
-            biodata
-
+            "Biodata Saved Successfully"
         );
 
         return true;
 
-    }
-
-    catch(error){
+    } catch (error) {
 
         console.error(
-
             "Unable to Save Biodata",
-
             error
-
         );
 
         return false;
-
     }
 
 }

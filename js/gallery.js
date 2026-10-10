@@ -206,27 +206,64 @@ function validateGalleryImage(file) {
 */
 
 
+
 function readGalleryImage(file) {
 
-    return new Promise(
+    return new Promise((resolve, reject) => {
 
-        (resolve, reject) => {
+        const reader = new FileReader();
 
-            const reader = new FileReader();
+        reader.onload = () => {
 
-            reader.onload =
+            const img = new Image();
 
-                event =>
+            img.onload = () => {
 
-                    resolve(event.target.result);
+                const maxSize = 1000;
 
-            reader.onerror = reject;
+                const scale = Math.min(
+                    1,
+                    maxSize / Math.max(img.width, img.height)
+                );
 
-            reader.readAsDataURL(file);
+                const canvas = document.createElement("canvas");
 
-        }
+                canvas.width = Math.round(img.width * scale);
+                canvas.height = Math.round(img.height * scale);
 
-    );
+                const ctx = canvas.getContext("2d");
+
+                if (!ctx) {
+                    reject(new Error("Canvas unavailable"));
+                    return;
+                }
+
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                resolve(
+                    canvas.toDataURL("image/jpeg", 0.80)
+                );
+
+            };
+
+            img.onerror = reject;
+            img.src = reader.result;
+
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+
+    });
 
 }
 
