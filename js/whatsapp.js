@@ -100,10 +100,10 @@ function getWhatsAppPopupText() {
                 "WhatsApp Messenger खोलें",
 
             business:
-                "WhatsApp Business",
+                "WhatsApp पर संदेश भेजें",
 
             businessDescription:
-                "WhatsApp Business खोलें",
+                "हमारे नंबर पर WhatsApp चैट खोलें",
 
             cancel:
                 "रद्द करें"
@@ -131,10 +131,10 @@ function getWhatsAppPopupText() {
             "Open WhatsApp Messenger",
 
         business:
-            "WhatsApp Business",
+            "Send WhatsApp Message",
 
         businessDescription:
-            "Open WhatsApp Business",
+            "Open chat with Jaiswal Vaivaahiki",
 
         cancel:
             "Cancel"
@@ -546,120 +546,46 @@ function isAndroidDevice() {
 
 }
 
-
-/*==========================================================
-                OPEN NORMAL WHATSAPP
-==========================================================*/
+/* ==========================================
+   OPEN STANDARD WHATSAPP CHAT
+========================================== */
 
 function openNormalWhatsApp(message) {
 
-    const encodedMessage =
-        encodeURIComponent(message);
-
-
-    /*
-     * Android:
-     *
-     * Try to open normal WhatsApp specifically.
-     */
-    if (isAndroidDevice()) {
-
-        const intentUrl =
-            "intent://send?phone=" +
-            WHATSAPP_CONFIG.phoneNumber +
-            "&text=" +
-            encodedMessage +
-            "#Intent;" +
-            "scheme=whatsapp;" +
-            "package=com.whatsapp;" +
-            "end";
-
-
-        window.location.href =
-            intentUrl;
-
-
-        return;
-
-    }
-
-
-    /*
-     * Desktop / iPhone / other devices:
-     *
-     * Use standard WhatsApp URL.
-     */
-    const url =
+    const whatsappURL =
         "https://wa.me/" +
         WHATSAPP_CONFIG.phoneNumber +
         "?text=" +
-        encodedMessage;
+        encodeURIComponent(message);
 
-
-    window.open(
-        url,
-        "_blank"
-    );
+    window.location.href = whatsappURL;
 
 }
 
 
-/*==========================================================
-                OPEN WHATSAPP BUSINESS
-==========================================================*/
+
+/* ==========================================
+   OPEN WHATSAPP CHAT WITH BUSINESS NUMBER
+========================================== */
 
 function openBusinessWhatsApp(message) {
 
-    const encodedMessage =
-        encodeURIComponent(message);
+    const phoneNumber = WHATSAPP_CONFIG.phoneNumber;
 
+    const encodedMessage = encodeURIComponent(message);
 
-    /*
-     * Android:
-     *
-     * WhatsApp Business package.
-     */
-    if (isAndroidDevice()) {
+    // Standard WhatsApp click-to-chat link.
+    // Does not force installation of WhatsApp Business.
 
-        const intentUrl =
-            "intent://send?phone=" +
-            WHATSAPP_CONFIG.phoneNumber +
-            "&text=" +
-            encodedMessage +
-            "#Intent;" +
-            "scheme=whatsapp;" +
-            "package=com.whatsapp.w4b;" +
-            "end";
-
-
-        window.location.href =
-            intentUrl;
-
-
-        return;
-
-    }
-
-
-    /*
-     * Desktop / iPhone / other devices:
-     *
-     * Standard WhatsApp fallback.
-     */
-    const url =
+    const whatsappURL =
         "https://wa.me/" +
-        WHATSAPP_CONFIG.phoneNumber +
+        phoneNumber +
         "?text=" +
         encodedMessage;
 
-
-    window.open(
-        url,
-        "_blank"
-    );
+    window.location.href = whatsappURL;
 
 }
-
 
 /*==========================================================
                 OPEN SELECTED WHATSAPP
